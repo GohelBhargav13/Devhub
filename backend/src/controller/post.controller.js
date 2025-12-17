@@ -1,4 +1,5 @@
 import { addNewPost } from "../services/post.service.js"
+import { fetchAllPosts,loginUserPosts } from "../services/post.service.js"
 /**
  * 
  * @param {import('express').Request} req 
@@ -25,5 +26,45 @@ export const newPostCreation = async(req,res) => {
         
     } catch (error) {
         console.log("Error while creating a new post", error)
+    }
+}
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+// All posts controller
+export const allPosts = async(req,res) => {
+    try {
+        const { status,all_posts } = await fetchAllPosts()
+        if(!status){
+            return res.status(400).json({ 'StatusCode':400, 'message':"No Posts are there" })
+        }
+
+        res.status(200).json({ 'StatusCode':200, data: { all_posts }, 'message': "Posts are fetched" })
+    } catch (error) {
+        console.log("Error while fetching a all posts",error)
+    }
+}
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+// Get user posts
+export const getOnlyUserPosts = async(req,res) => {
+    try {
+        const { user_id } = req.user
+
+       const { status,u_posts } =  await loginUserPosts(user_id)
+       if(!status){
+            return res.status(400).json({ 'StatusCode':400, 'error':'No Post Available' })
+       }
+
+       res.status(200).json({ 'StatusCode':200, 'data': { u_posts }, 'message':"Users posts are" })
+    } catch (error) {
+        console.log("Error while fetch only users posts",error)
     }
 }

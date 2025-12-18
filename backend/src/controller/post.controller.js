@@ -1,5 +1,5 @@
 import { addNewPost } from "../services/post.service.js"
-import { fetchAllPosts,loginUserPosts } from "../services/post.service.js"
+import { fetchAllPosts,loginUserPosts,deleteAUserPost } from "../services/post.service.js"
 /**
  * 
  * @param {import('express').Request} req 
@@ -66,5 +66,31 @@ export const getOnlyUserPosts = async(req,res) => {
        res.status(200).json({ 'StatusCode':200, 'data': { u_posts }, 'message':"Users posts are" })
     } catch (error) {
         console.log("Error while fetch only users posts",error)
+    }
+}
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+// Delete a post controller
+export const deletePostOfUser = async(req,res) => {
+    try {
+        const { postId } = req.params
+        const current_userId = req.user.user_id
+
+        if(!postId){
+            return res.status(400).json({ 'StatusCode':400,'error':"PostId is not provided" })
+        }
+
+       const { status,deleted_postId } =  await deleteAUserPost(postId,current_userId)
+        if(!status){
+            return res.status(400).json({ 'StatusCode':400, 'error':"You're not authorize to delete this post" })
+        }
+
+        res.status(200).json({ 'StatusCode':200, 'data': { deleted_postId }, 'message':"Post is deleted Successfully" })
+    } catch (error) {
+        console.log("Error while deleting a post in main controller",error)
     }
 }

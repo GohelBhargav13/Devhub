@@ -1,5 +1,6 @@
-import { createNewUser,isPasswordMatch,isUserExisting } from  "../services/user.service.js"
+import { createNewUser,isPasswordMatch,isUserExisting,changeUserStatusLogin,changeUserStatusLogout } from  "../services/user.service.js"
 import { userPasswordHash,generateUserToken } from "../services/security.service.js"
+import { userGreetMessage } from "../services/greet.service.js"
 
 // Register controller
 export const userRegister = async(req,res) => {
@@ -53,6 +54,11 @@ export const userLogin = async (req,res) => {
        }
        const userToken = await generateUserToken(existing_user?.user_id)
 
+    //   const greeting_message = await userGreetMessage(existing_user?.user_name)
+    //   console.log(greeting_message)
+      await changeUserStatusLogin(existing_user?.user_id)
+
+    //    console.log(req.headers.authorization)
        res.status(200).json({ 'StatusCode': StatusCode, 'message': "Login successful",'user_token':userToken })
 
     } catch (error) {
@@ -61,12 +67,32 @@ export const userLogin = async (req,res) => {
 }
 
 // GetMe controller
-export const getProfile = (req,res) => {
+export const getProfile = async(req,res) => {
     try {
         const { user_id } = req.user
         return res.status(200).json({ 'StatusCode':200, 'message': `User Login With ${user_id}` })
         
     } catch (error) {
         console.log("Error while when getting a user details")
+    }
+}
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+// Logout controller
+export const userLogout = async(req,res) => {
+    try {
+        const userId = req.user.user_id
+        await changeUserStatusLogout(userId)
+
+        const authToken = req.headers.authorization
+        req.headers.authorization = authToken.replace(authToken.split(" ")[1]," ")
+        console.log(req.headers.authorization)
+
+        return res.status(200).json({ 'StatusCode': 200, 'message': 'User logout successfully' })
+    } catch (error) {
+        console.log("error while logout user")
     }
 }

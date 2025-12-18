@@ -79,8 +79,10 @@ export const isPasswordMatch = async(user_password,user_email) => {
     try {
 
         const [existing_user] = await db.select({
+            user_id:userTable.user_id,
             users_password:userTable.user_password,
-            user_salt:userTable.salt
+            user_salt:userTable.salt,
+            is_active:userTable.is_active
         }).from(userTable).where(eq(userTable.user_email,user_email))
 
         const login_user_password = createHmac("sha256",existing_user.user_salt).update(user_password).digest("hex")
@@ -89,9 +91,35 @@ export const isPasswordMatch = async(user_password,user_email) => {
             return { 'Status': false, 'Statuscode': 400 }
         }
 
+        await db.update(userTable).set({ is_active:true }).where(eq(userTable.user_id,existing_user.user_id))
+
         return { 'Status':true, 'StatusCode': 200 }
 
     } catch (error) {
         console.log("error while matching a password from the user")        
+    }
+}
+
+// change is_active status function
+export const changeUserStatusLogin = async(user_id) => {
+    try {
+        if(!user_id){
+            return
+        }
+         await db.update(userTable).set({ is_active:true }).where(eq(userTable.user_id,user_id))
+    } catch (error) {
+        console.log("Error while updating a users is_active status",error)
+    }
+} 
+
+// change is_active status function for logout
+export const changeUserStatusLogout = async(user_id) => {
+    try {
+        if(!user_id){
+            return
+        }
+         await db.update(userTable).set({ is_active:false }).where(eq(userTable.user_id,user_id))
+    } catch (error) {
+        console.log("Error while updating a users is_active status",error)
     }
 }

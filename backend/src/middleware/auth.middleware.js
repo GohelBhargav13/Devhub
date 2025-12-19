@@ -14,21 +14,29 @@ import { eq } from "drizzle-orm"
 export const checkTokenExists = async(req,res,next) => {
     try {
 
-        const authHeaders = req.headers.authorization
-        if(!authHeaders){
-            return next()
-        }
+        // const authHeaders = req.headers.authorization
+        console.log(req.cookies?.access_token)
+        const user_access_token = req.cookies?.access_token
 
-        if(!authHeaders.startsWith('Bearer')){
-            return res.status(404).json({ StatusCode:404, 'error':'Bearer token is not found' })
-        }
-
-        const original_token = authHeaders.split(" ")[1]
-        if(!original_token){
+        console.log(user_access_token)
+        if(!user_access_token){
             next()
         }
 
-       const decoded = jwt.verify(original_token,process.env.JWT_SECRET)
+        // if(!authHeaders){
+        //     return next()
+        // }
+
+        // if(!authHeaders.startsWith('Bearer')){
+        //     return res.status(404).json({ StatusCode:404, 'error':'Bearer token is not found' })
+        // }
+
+        // const original_token = authHeaders.split(" ")[1]
+        // if(!original_token){
+        //     next()
+        // }
+
+       const decoded = jwt.verify(user_access_token,process.env.JWT_SECRET)
        const [user_details] = await db.select().from(userTable).where(eq(userTable.user_id,decoded.user_id))
 
 

@@ -1,6 +1,5 @@
 import { createNewUser,isPasswordMatch,isUserExisting,changeUserStatusLogin,changeUserStatusLogout } from  "../services/user.service.js"
 import { userPasswordHash,generateUserToken } from "../services/security.service.js"
-import { userGreetMessage } from "../services/greet.service.js"
 
 // Register controller
 export const userRegister = async(req,res) => {
@@ -31,6 +30,12 @@ export const userRegister = async(req,res) => {
     }
 }
 
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ * @returns 
+ */
 // Login controller
 export const userLogin = async (req,res) => {
     try {
@@ -52,13 +57,16 @@ export const userLogin = async (req,res) => {
        if(!Status){
             return res.status(400).json({ 'StatusCode': StatusCode, 'message': "Password is not match. please enter a valid password" })
        }
-       const userToken = await generateUserToken(existing_user?.user_id)
+       const userToken = await generateUserToken(existing_user?.user_id,existing_user.user_role)
 
-    //   const greeting_message = await userGreetMessage(existing_user?.user_name)
-    //   console.log(greeting_message)
       await changeUserStatusLogin(existing_user?.user_id)
 
-    //    console.log(req.headers.authorization)
+      res.cookie("access_token",userToken,{
+        httpOnly:true,
+        secure:true,
+        maxAge:24 * 60 * 60 * 1000
+      })
+
        res.status(200).json({ 'StatusCode': StatusCode, 'message': "Login successful",'user_token':userToken })
 
     } catch (error) {

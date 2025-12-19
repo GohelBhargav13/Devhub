@@ -20,10 +20,10 @@ export const userPasswordHash = async (user_password) => {
 }
 
 // JSONWEBTOKEN for the user authentication
-export const generateUserToken = async(user_id) => {
+export const generateUserToken = async(user_id,user_role) => {
     try {
         
-        const userToken = jwt.sign({ user_id },process.env.JWT_SECRET,{ expiresIn:'24h' })
+        const userToken = jwt.sign({ user_id,user_role },process.env.JWT_SECRET,{ expiresIn:'24h' })
         return userToken
 
     } catch (error) {

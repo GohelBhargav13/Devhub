@@ -1,12 +1,14 @@
 import toast from "react-hot-toast"
-import { userLogoutApi } from "../apis/auth.api"
-import { Button } from "../component/layout/Button"
+import { ButtonLayout as Button } from "../component/layout/ButtonLayout"
 import { useNavigate } from "react-router-dom"
+import { useAuthStore } from "../store/auth.store.js"
 
 const HomePage = () => {
     const navigate = useNavigate()
+    const logoutFunc = useAuthStore((state) => state.userLogout)
+
     const logoutHandler = async() => {
-        const responseData = await userLogoutApi()
+        const responseData = await logoutFunc()
         if(responseData?.StatusCode >= 400){
             toast.error(responseData?.error)
             return

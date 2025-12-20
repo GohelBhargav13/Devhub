@@ -1,19 +1,24 @@
 import { useState } from "react";
 import { MessageSquare,Lock,Eye,EyeClosed } from "lucide-react"
-import { userLoginApi } from "../apis/auth.api.js"
 import { toast } from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
+import { useAuthStore } from "../store/auth.store.js"
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [processing,setProcessing] = useState(false)
   const navigate = useNavigate()
+
+  const loginFunc = useAuthStore((state) => state.userLogin)
   
+  // Login handler
   const handlesubmit = async(e) => {
     e.preventDefault();
     try {
-        const responseData = await userLoginApi({ userEmail:email,userPassword:password })
+      setProcessing(true)
+        const responseData = await loginFunc({ user_email:email,user_password:password })
     
         if(responseData?.StatusCode >= 400){
             toast.error(responseData?.error)
@@ -26,6 +31,11 @@ const LoginPage = () => {
         }
     } catch (error) {
         console.log("Error while login in the platform in LoginPage",error)
+        setProcessing(false)
+    }finally{
+      setProcessing(false)
+      setEmail("")
+      setPassword("")
     }
   };
 
@@ -75,17 +85,18 @@ const LoginPage = () => {
                 placeholder=". . . . . . . . . ."
                 className="w-full max-w-md pl-10 pb-3 border-2 border-white bg-slate-700 left-15 p-4 rounded-lg shadow-lg text-sm focus:outline-none focus:border-cyan-400"
             />
-            <button className="absolute left-82 top-15 cursor-pointer hover:shadow-amber-50" onClick={() => setShowPassword(!showPassword)}>
+            <button type="button" className="absolute left-82 top-15 cursor-pointer hover:shadow-amber-50 text-slate-900" onClick={() => setShowPassword(!showPassword)}>
                 { showPassword ? <EyeClosed size={20} /> : <Eye size={20} />  }
             </button>
             </div>
         </div>
+
         <div>
             <button type="submit"
             disabled={ !email || !password }
-            className={`text-[18px] font-mono font-bold text-white bg-cyan-500  ${ (!email || !password ) ? "disabled:bg-slate-400 disabled:cursor-not-allowed" : "bg-linear-to-br from-cyan-700 via-cyan-400 to-cyan-700 hover:bg-cyan-600 cursor-pointer hover:shadow-2xl" } w-full max-w-md mt-6 p-3 rounded-lg shadow-lg transition-all`}
+            className={`text-[18px] font-mono font-bold text-white bg-cyan-500  ${ (!email || !password || processing) ? "disabled:bg-slate-400 disabled:cursor-not-allowed" : "bg-linear-to-br from-cyan-700 via-cyan-400 to-cyan-700 hover:bg-cyan-600 cursor-pointer hover:shadow-2xl" } w-full max-w-md mt-6 p-3 rounded-lg shadow-lg transition-all`}
             >
-                Login
+                { processing ? 'Processing...' : 'Login' }
             </button>
         </div>
         <p className="font-mono text-[16px] mt-4 text-center">Don't have an account? <a href="/register" className="font-bold text-blue-700 underline">REGISTER</a></p>

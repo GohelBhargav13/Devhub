@@ -1,5 +1,6 @@
 import { apiClient } from "../services/axios.js"
 
+// User Login API
 export const userLoginApi = async({ userEmail,userPassword }) => {
     const user_login_details = {
         user_email:userEmail,
@@ -24,6 +25,7 @@ export const userLoginApi = async({ userEmail,userPassword }) => {
     }
 }
 
+// User Logout API
 export const userLogoutApi = async() => {
     try {
         const responseData = await apiClient.get("/user/user-logout")
@@ -36,5 +38,21 @@ export const userLogoutApi = async() => {
     } catch (error) {
         console.log("Error while logging out a user",error)
         return { 'StatusCode':400,'error':error.response?.data?.message || error.response?.data?.error }
+    }
+}
+
+// User Register API
+export const userRegisterApi = async({ user_name,user_email,user_password }) => {
+    try {
+       const responseData = await apiClient.post("/user/register",{ user_name,user_email,user_password })
+       const actualRes = responseData?.data
+
+       if(actualRes?.StatusCode === 201){
+            return { 'StatusCode':201, 'message': `Registration completed 🎉`}
+       }
+        
+    } catch (error) {
+        console.log("Error while register a user in api",error?.response?.data?.error)
+        return { 'StatusCode':400, 'error': error?.response?.data?.error}
     }
 }

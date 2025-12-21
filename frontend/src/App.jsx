@@ -8,6 +8,9 @@ import { useEffect } from "react"
 import { ProtectRoute } from "./services/ProtectRoute.jsx"
 import UserProfile from "./pages/UserProfile.jsx"
 import NewPost from "./pages/NewPost.jsx"
+import DashBoard from "./pages/AdminPages/DashBoard.jsx"
+import AdminProtectRoute from "./services/AdminProtectRoute.jsx"
+import UserDetails from "./pages/AdminPages/UserDetails.jsx"
 
 
 function App() {
@@ -44,6 +47,8 @@ function App() {
           <Route path="/register" element={ <RegisterPage /> } />
           <Route path="/get-profile" element={ <ProtectRoute> <UserProfile /> </ProtectRoute> } />
           <Route path="/new-post" element={ <ProtectRoute> <NewPost /> </ProtectRoute> } />
+          <Route path="/admin/dashboard" element={ <ProtectRoute> <AdminProtectRoute> <DashBoard /> </AdminProtectRoute> </ProtectRoute> } />
+          <Route path="/admin/user-data" element={ <ProtectRoute> <AdminProtectRoute> <UserDetails /> </AdminProtectRoute> </ProtectRoute> } />
         </Routes>
       </div>
     </>

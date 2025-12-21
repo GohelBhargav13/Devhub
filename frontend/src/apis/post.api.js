@@ -59,3 +59,84 @@ export const createNewPost = async({ post_description,post_link }) => {
         return { 'status':false, 'message':error?.response?.data?.error ||  error?.response?.data?.message  }
     }
 }
+
+// delete a post by the user
+export const deletePost = async(post_id) => {
+    try {
+       const responseData = await apiClient.delete(`/post/delete-post/${post_id}`)
+       const actual_data = responseData?.data
+
+       if(actual_data?.StatusCode >= 400){
+            return { 'status':false, 'error': actual_data?.error }
+       }
+       if(actual_data?.StatusCode === 200){
+            return { 'status':true, 'message':actual_data?.message, 'data': actual_data?.data }
+       }
+        
+    } catch (error) {
+        console.log("Error while deleting a post from the api file",error)
+        return { 'status':false, 'error': error?.response?.data?.errro || error?.response?.data?.message }
+    }
+}
+
+// count User, Posts, Active Users
+export const countAll = async() => {
+    try {
+        
+        const actual_data = await Promise.all([
+            apiClient.get("/admin/get-all-userscount"),
+            apiClient.get("/admin/get-all-postscount"),
+            apiClient.get("/admin/active-user")
+        ])
+
+        if(actual_data?.StatusCode >= 400){
+            return { 'status':false, 'error': actual_data?.error }
+        }
+        if(actual_data.length > 0){
+            return { 'status':true, 'data':actual_data }
+        }
+        
+    } catch (error) {
+        console.log("Error while deleting a post from the api file",error)
+        return { 'status':false, 'error': error?.response?.data?.errro || error?.response?.data?.message }
+    }
+}
+
+// all users details
+export const allUsersDetails = async() => {
+    try {
+        const responseData = await apiClient.get("/admin/all-users")
+        const actual_data = responseData?.data
+
+        if(actual_data?.StatusCode >= 400){
+            return { 'status':false, 'error':actual_data?.error, 'user_data':null }
+        }
+        if(actual_data?.StatusCode === 200){
+            return { 'status':true, 'message':actual_data?.message, 'user_data':actual_data?.all_user_details}
+        }
+        
+    } catch (error) {
+        console.log("Error while fetching the all users data",error)
+        return { 'status':false, 'error':error?.response?.data?.error || error?.response?.data?.message }
+    }
+}
+
+// delete users
+export const deleteUserFunc = async(user_id) => {
+    try {
+        const responseData = await apiClient.delete(`/admin/delete-user/${user_id}`)
+        const actualRes = responseData?.data
+
+        if(actualRes?.StatusCode >= 400){
+            return { 'status':false, 'error':actualRes?.error, 'deletedu_details':null }
+        }
+
+        if(actualRes?.StatusCode === 200){
+            return { 'status':true, 'message':actualRes?.message, 'deletedu_details':actualRes?.data }
+        }
+        
+    } catch (error) {
+        console.log("Error while deleting a user with the api",error)
+        return { 'status':false, 'error':error?.response?.data?.error || error?.response?.data?.message }
+    }
+}

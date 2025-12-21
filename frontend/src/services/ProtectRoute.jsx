@@ -12,5 +12,5 @@ export const ProtectRoute = ({children}) => {
         )
     }
 
-   return (userData && isLogin) ? children : <Navigate to="/login" />
+   return (!userData && !isLogin) ? <Navigate to={'/login'} /> : children 
 }

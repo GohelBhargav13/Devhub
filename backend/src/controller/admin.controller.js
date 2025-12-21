@@ -70,10 +70,12 @@ export const allUsersDetails = async(req,res) => {
     try {
 
         const all_user_details = await db.select({
-            user_is:userTable.user_id,
+            user_id:userTable.user_id,
             user_name:userTable.user_name,
+            user_email:userTable.user_email,
             user_internal_name:userTable.internal_username,
-            created_at:userTable.created_at
+            created_at:userTable.created_at,
+            user_role:userTable.user_role
         }).from(userTable)
 
         if(all_user_details.length === 0){
@@ -112,5 +114,37 @@ export const allPostDetails = async(req,res) => {
         
     } catch (error) {
         console.log("Error while fetch the post in the controller all",error)
+    }
+}
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+// delete user controller
+export const userDelete = async(req,res) => {
+    try {
+        const { userId } = req.params
+
+        res.cookie("access_token","",{
+            httpOnly:true,
+            secure:true,
+            maxAge:0
+        })
+
+       const [deleted_user] = await db.delete(userTable).where(eq(userTable.user_id,userId)).returning({
+            user_id:userTable.user_id,
+            user_name:userTable.user_name
+        })
+
+        if(!deleted_user){
+            return res.status(400).json({ 'StatusCode':400, 'error': "User is not deleted" })
+        }
+
+        res.status(200).json({ 'StatusCode':200, 'message': "User deleted successfully", 'data':deleted_user })
+        
+    } catch (error) {
+        console.log("Error in the user-delete controller",error)
     }
 }

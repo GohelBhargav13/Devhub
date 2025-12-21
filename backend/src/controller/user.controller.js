@@ -14,7 +14,7 @@ export const userRegister = async(req,res) => {
         // User is existing or not
         const { status } = await isUserExisting(user_email)
         if(status){
-            return res.status(400).json({ 'error': `${user_email} is already exists` })
+            return res.status(400).json({'StatusCode':400, 'error': `${user_email} is already exists` })
         }
 
         // User password hash & salt and also create a new user
@@ -43,7 +43,7 @@ export const userLogin = async (req,res) => {
             
         // All fields validation
         if(!user_email || !user_password){
-            return  res.status(400).json({ 'message': 'All Fields are required' })
+            return  res.status(400).json({ 'StatusCode':400, 'message': 'All Fields are required' })
         }
 
         // Check if the email is exists or not
@@ -55,7 +55,7 @@ export const userLogin = async (req,res) => {
         // verify the user's password
        const { Status,StatusCode } = await isPasswordMatch(user_password,user_email)
        if(!Status){
-            return res.status(400).json({ 'StatusCode': StatusCode, 'message': "Password is not match. please enter a valid password" })
+            return res.status(400).json({ 'StatusCode': 400, 'message': "Password is not match. please enter a valid password" })
        }
        const userToken = await generateUserToken(existing_user?.user_id,existing_user.user_role)
 
@@ -63,11 +63,19 @@ export const userLogin = async (req,res) => {
 
       res.cookie("access_token",userToken,{
         httpOnly:true,
-        secure:true,
+        secure:false,
         maxAge:24 * 60 * 60 * 1000
       })
 
-       res.status(200).json({ 'StatusCode': StatusCode, 'message': "Login successful",'user_token':userToken })
+      const user_details = {
+        user_name:existing_user?.user_name,
+        user_internalname:existing_user?.internal_username,
+        user_email:existing_user?.user_email,
+        user_role:existing_user?.user_role,
+        is_active:existing_user?.is_active,
+      }
+
+       res.status(200).json({ 'StatusCode': StatusCode, 'message': "Login successful",'user_token':userToken,'existing_user':user_details })
 
     } catch (error) {
         console.log("Error while user login in main controller")
@@ -95,9 +103,15 @@ export const userLogout = async(req,res) => {
         const userId = req.user.user_id
         await changeUserStatusLogout(userId)
 
-        const authToken = req.headers.authorization
-        req.headers.authorization = authToken.replace(authToken.split(" ")[1]," ")
-        console.log(req.headers.authorization)
+        // const authToken = req.headers.authorization
+        // req.headers.authorization = authToken.replace(authToken.split(" ")[1]," ")
+        // console.log(req.headers.authorization)
+
+        res.cookie("access_token","",{
+            httpOnly:true,
+            secure:true,
+            maxAge:0
+        })
 
         return res.status(200).json({ 'StatusCode': 200, 'message': 'User logout successfully' })
     } catch (error) {

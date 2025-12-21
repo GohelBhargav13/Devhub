@@ -1,14 +1,19 @@
 import { useState } from "react"
-import { X,MenuSquare,Home,Contact,LogOut, Cross } from "lucide-react"
+import { X,MenuSquare,Home,Contact,LogOut, Cross,LayoutDashboard,User } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import UserAvatar from "./UserAvatar.jsx"
 import { useAuthStore } from "../../store/auth.store.js"
 import toast from "react-hot-toast"
 
-const platform_urls = [
+const platform_urls_users = [
   { 'url_name':'Home', 'path':'/', 'url_icon':<Home /> },
   { 'url_name':'Profile', 'path':'/get-profile','url_icon':<Contact /> },
   { 'url_name':'Post', 'path':'/new-post','url_icon':<Cross /> },
+]
+
+const platform_urls_admin = [
+     { 'url_name':'Dashboard', 'path':'/admin/dashboard','url_icon':<LayoutDashboard /> },
+     { 'url_name':'Users', 'path':'/admin/user-data','url_icon':<User /> },
 ]
 
 const SideBar = ({ userData }) => {
@@ -53,13 +58,18 @@ const SideBar = ({ userData }) => {
                    ) : ( <div className="mt-4 bg-slate-950 text-white p-3 rounded-xl border-r-2 border-r-white border-b-4 border-b-white text-[20px]">DH</div> ) }
           </div>
           <div className={`flex flex-col text-[17px] gap-8 ${isOpen ? "p-8" : "p-2"}`}>
-                   {platform_urls.map((url) => (
+                   {platform_urls_users.map((url) => (
+                    ( isOpen ? ( <button key={url.url_name} className=" bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white" onClick={() => naviagte(url.path)}>{url.url_name}</button>) : ( <button key={url.url_name} className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white justify-items-center" onClick={() => naviagte(url.path)}>
+                      { url.url_icon }
+                    </button>))
+                   ))}
+                    {userData?.user_role === 'ADMIN' && platform_urls_admin.map((url) => (
                     ( isOpen ? ( <button key={url.url_name} className=" bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white" onClick={() => naviagte(url.path)}>{url.url_name}</button>) : ( <button key={url.url_name} className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white justify-items-center" onClick={() => naviagte(url.path)}>
                       { url.url_icon }
                     </button>))
                    ))}
           </div>
-          <div className={`flex flex-col ${isOpen ? "mt-50" : "mt-70"}`}>
+          <div className={`flex flex-col ${isOpen ? "mt-30" : "mt-40"}`}>
               <div className="bg-slate-950 text-white border-2 border-white rounded-lg p-3">
               {isOpen ? ( <div className="flex flex-row gap-4 text-sm">
                     <UserAvatar username={userData?.user_name} />

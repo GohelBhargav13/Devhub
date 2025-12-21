@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { loginUserPosts } from "../../apis/post.api.js"
 import toast from "react-hot-toast";
 import UserAvatar from "./UserAvatar.jsx";
+import { Trash } from "lucide-react"
+import { deletePost } from "../../apis/post.api.js"
 
 const UserPost = () => {
   const [allPosts, setAllPosts] = useState([]);
@@ -27,16 +29,31 @@ const UserPost = () => {
                 setIsLoading(false)
             }   
   }
-
   fetchPosts()
   },[])
+
+  // delete post handler
+  const deletePostHandler = async(post_id) => {
+    try {
+         const responseData = await deletePost(post_id)
+         if(!responseData?.status){
+            toast.error(responseData?.error)
+            return
+         }
+         setAllPosts(prev => prev.filter(post => post?.post_id !== post_id))
+         toast.success(responseData?.message)
+    } catch (error) {
+      console.log("Error while in the delete handler in Userpost",error)
+    }finally{
+      console.log("post delete function is trigger")
+    }
+  }
 
   if(isLoading){
     return (
         <div className="text-center my-auto">Loading...</div>
     )
   }
-
   return (
     <>
       {allPosts.length === 0 && (
@@ -48,7 +65,7 @@ const UserPost = () => {
         {allPosts.length > 0 &&
           allPosts.map((post) => (
             <div
-              key={post?.post_at}
+              key={post?.post_id}
               className="bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 h-80 rounded-2xl hover:scale-105 hover:duration-300 hover:border-r-2 hover:border-slate-500 hover:border-b-2"
             >
               <div className="flex gap-5 p-4 w-full">
@@ -64,6 +81,10 @@ const UserPost = () => {
                     {post?.internal_username ?? "None"}
                   </p>
                 </div>
+                <button
+                className={`cursor-pointer ${post?.post_id ? "visible" : "hidden"}`}
+                onClick={() => deletePostHandler(post?.post_id)}
+                > <Trash /></button>
               </div>
               <div className="bg-linear-to-br from-slate-700 to-slate-950 h-57 p-4 w-full rounded-xl rounded-t-3xl py-8 border-t-4 border-t-white">
                 <p className="mb-7 font-mono text-[16px]">{post?.post_desc}</p>

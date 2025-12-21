@@ -1,6 +1,6 @@
 import { postTable,userTable } from "../models/index.js"
 import { db } from "../db_config/db_config_postgres.js"
-import { and, eq } from "drizzle-orm"
+import { and, desc, eq } from "drizzle-orm"
 
 // New Post function
 export const addNewPost = async(...postDetails) => {
@@ -32,7 +32,7 @@ export const fetchAllPosts = async() => {
             post_at:postTable.created_at,
             user_name:userTable.user_name,
             internal_username:userTable.internal_username
-        }).from(postTable).rightJoin(userTable, eq(userTable.user_id,postTable.user_id))
+        }).from(postTable).innerJoin(userTable, eq(userTable.user_id,postTable.user_id)).orderBy(desc(postTable.created_at))
 
         if(all_available_posts.length === 0){
             return { 'status':false, 'all_posts':null }

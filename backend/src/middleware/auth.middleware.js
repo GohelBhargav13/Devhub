@@ -15,10 +15,10 @@ export const checkTokenExists = async(req,res,next) => {
     try {
 
         // const authHeaders = req.headers.authorization
-        console.log(req.cookies?.access_token)
+        // console.log(req.cookies?.access_token)
         const user_access_token = req.cookies?.access_token
 
-        console.log(user_access_token)
+        // console.log(user_access_token)
         if(!user_access_token){
             next()
         }

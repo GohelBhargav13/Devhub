@@ -1,12 +1,18 @@
 import express from "express"
 import cookieParser from "cookie-parser"
+import cors from "cors"
 import "dotenv/config"
-
 
 const app = express()
 const PORT = process.env.PORT ?? 4000
 
 // Middlewares ( Global )
+app.use(cors({
+    origin:['http://localhost:5173','http://localhost:5174'],
+    methods:["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
+    credentials:true,
+    allowedHeaders:["Content-Type","Authorization"]
+}))
 app.use(express.json())
 app.use(express.urlencoded({ extended:true }))
 app.use(cookieParser())

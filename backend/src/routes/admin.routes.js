@@ -1,5 +1,5 @@
 import express from "express"
-import { allActiveUsers, allPostCount, allUsersCount, allUsersDetails, totalUsersDetails,allPostDetails } from "../controller/admin.controller.js"
+import { allActiveUsers, allPostCount, allUsersCount, allUsersDetails, totalUsersDetails,allPostDetails,userDelete } from "../controller/admin.controller.js"
 import { checkTokenExists, ensureUserAuthenticate } from "../middleware/auth.middleware.js"
 import { checkUserRole } from "../middleware/check.middleware.js"
 
@@ -15,5 +15,7 @@ adminRoutes.get("/get-all-postscount",allPostCount)
 adminRoutes.get("/active-user",allActiveUsers)
 adminRoutes.get("/all-users",allUsersDetails)
 adminRoutes.get("/all-posts",allPostDetails)
+adminRoutes.get("/all-posts",allPostDetails)
+adminRoutes.delete("/delete-user/:userId",userDelete)
 
 export default adminRoutes

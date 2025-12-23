@@ -24,7 +24,7 @@ A developers community where dev can share a new and latest updates,version to t
 - **Frontend:** React / Tailwind CSS / Lucide-react ( Icon Library )
 - **Backend:** Node.js / Express / Zustand - ( State Management Library ) / Socket.io ( Real-Time updation ) / Brevo ( for Production email verification sending )
 - **Database:** Postgres / drizzle ( ORM )  
-- **Other:** JWT, Docker
+- **Other:** JWT, Docker, neon ( for postgresql )
 
 ---
 

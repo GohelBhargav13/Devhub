@@ -18,6 +18,7 @@ export const checkTokenExists = async(req,res,next) => {
         // console.log(req.cookies?.access_token)
         const user_access_token = req.cookies?.access_token
 
+        console.log(user_access_token)
         // console.log(user_access_token)
         if(!user_access_token){
             next()
@@ -45,7 +46,7 @@ export const checkTokenExists = async(req,res,next) => {
        next()
         
     } catch (error) {
-        console.log("Error while authenticate using a bearer token",error)
+        console.log("Error while authenticate using a bearer token",error.message)
     }
 }
 

@@ -97,7 +97,7 @@ export const userLogin = async (req,res) => {
       await changeUserStatusLogin(existing_user?.user_id)
 
       res.cookie("access_token",userToken,{
-        httpOnly:true,
+        httpOnly:false,
         secure:false,
         sameSite:"none",
         maxAge:24 * 60 * 60 * 1000

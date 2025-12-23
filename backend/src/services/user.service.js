@@ -52,7 +52,7 @@ export const createInternalName = async() => {
 
 // Create new user function
 export const createNewUser = async(...userDetails) => {
-    const [user_name,user_email,user_password,salt] = userDetails
+    const [user_name,user_email,user_password,salt,email_token] = userDetails
     try {
 
         const internal_name = await createInternalName()
@@ -61,7 +61,8 @@ export const createNewUser = async(...userDetails) => {
             user_email,
             user_password,
             salt,
-            internal_username:internal_name
+            internal_username:internal_name,
+            email_verificationToken:email_token
         }).returning({
             user_id: userTable.user_id
         })
@@ -121,5 +122,26 @@ export const changeUserStatusLogout = async(user_id) => {
          await db.update(userTable).set({ is_active:false }).where(eq(userTable.user_id,user_id))
     } catch (error) {
         console.log("Error while updating a users is_active status",error)
+    }
+}
+
+// User email verification function
+export const userEmailVerification = async(user_email_token) => {
+    try {
+
+       const [user_token] = await db.select({
+            user_id:userTable.user_id,
+            user_emailToken:userTable.email_verificationToken
+        }).from(userTable).where(eq(userTable.email_verificationToken,user_email_token))
+
+        if(!user_token.user_id){
+            return { 'StatusCode':400, 'error':"User email token is not found", 'status':false }
+        }
+       const [updated_user] = await db.update(userTable).set({ email_verificationToken:null,is_verified:true }).where(eq(userTable.user_id,user_token.user_id)).returning({ user_id:userTable.user_id, user_emailToken:userTable.email_verificationToken })
+
+        return { 'StatusCode':200, 'message': "User is verified", 'status':true, 'user_id':updated_user.user_id }
+
+    } catch (error) {
+        console.log("Error while verifiy the email token",error)
     }
 }

@@ -30,3 +30,12 @@ export const generateUserToken = async(user_id,user_role) => {
         console.log("Error while generating a user token for the login")
     }
 }
+
+// generate a email token for the verification
+export const emailTokenGenerator = async() => {
+    try {
+        return randomBytes(32).toString("hex")
+    } catch (error) {
+        console.log("Error while creating a email verification token",error)
+    }
+}

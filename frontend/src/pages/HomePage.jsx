@@ -76,7 +76,7 @@ const HomePage = () => {
               {searchPost.map((post) => (
                 <div 
                   key={post?.post_at} 
-                  className="bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 h-auto rounded-2xl hover:scale-105 hover:duration-300 hover:border-r-2 hover:border-slate-500 hover:border-b-2"
+                  className="bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 h-auto rounded-2xl hover:scale-105 hover:duration-300 hover:border-r-2 hover:border-slate-500 hover:border-b-2 w-fit"
                 >
                   <div className="flex gap-5 p-4 w-full">
                     <div className="p-1 rounded-lg">
@@ -89,7 +89,7 @@ const HomePage = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="bg-linear-to-br from-slate-700 to-slate-950 h-fit p-4 w-fit overflow-x-scroll rounded-xl rounded-t-3xl py-8 border-t-4 border-t-white">
+                  <div className="bg-linear-to-br from-slate-700 to-slate-950 h-fit p-4 w-fit rounded-xl rounded-t-3xl py-8 border-t-4 border-t-white">
                     <p className="mb-7 font-mono text-[16px]">{post?.post_desc}</p>
                     {post?.post_link && (
                       <>

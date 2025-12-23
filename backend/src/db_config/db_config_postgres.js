@@ -1,4 +1,11 @@
 import 'dotenv/config';
 import { drizzle } from "drizzle-orm/node-postgres"
+import { Client } from "pg"
 
-export const db = drizzle(process.env.DATABASE_URL)
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true, // Important for Neon!
+});
+
+await client.connect();
+export const db = drizzle(client)

@@ -20,6 +20,6 @@ export const userTable = pgTable("users", {
   is_active: boolean().default(false),
   is_verified: boolean().default(false),
   email_verificationToken: text(),
-  user_role: userRoleEnum().default("USER").notNull(),
+  user_role: userRoleEnum("user_role").default("USER").notNull(),
   created_at: timestamp().defaultNow().notNull(),
 });

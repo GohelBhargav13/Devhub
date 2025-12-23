@@ -89,7 +89,7 @@ const HomePage = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="bg-linear-to-br from-slate-700 to-slate-950 h-fit p-4 w-full rounded-xl rounded-t-3xl py-8 border-t-4 border-t-white">
+                  <div className="bg-linear-to-br from-slate-700 to-slate-950 h-fit p-4 w-fit overflow-x-scroll rounded-xl rounded-t-3xl py-8 border-t-4 border-t-white">
                     <p className="mb-7 font-mono text-[16px]">{post?.post_desc}</p>
                     {post?.post_link && (
                       <>

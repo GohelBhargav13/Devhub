@@ -1,5 +1,6 @@
-import { createNewUser,isPasswordMatch,isUserExisting,changeUserStatusLogin,changeUserStatusLogout } from  "../services/user.service.js"
-import { userPasswordHash,generateUserToken } from "../services/security.service.js"
+import { createNewUser,isPasswordMatch,isUserExisting,changeUserStatusLogin,changeUserStatusLogout,userEmailVerification } from  "../services/user.service.js"
+import { userPasswordHash,generateUserToken,emailTokenGenerator } from "../services/security.service.js"
+import { sendEmail,verificationEmailTemplate } from "../utills/mail.js"
 
 // Register controller
 export const userRegister = async(req,res) => {
@@ -19,7 +20,10 @@ export const userRegister = async(req,res) => {
 
         // User password hash & salt and also create a new user
         const { salt, hashed_password } = await userPasswordHash(user_password)
-        const { new_user_id } = await createNewUser(user_name,user_email,hashed_password,salt)
+        const email_token = await emailTokenGenerator()
+        const { new_user_id } = await createNewUser(user_name,user_email,hashed_password,salt,email_token)
+
+        await sendEmail({ email:user_email,subject:'For Email Verification',mailgencontent:verificationEmailTemplate(user_name,email_token) })
 
         if(new_user_id){
             return res.status(201).json({ 'StatusCode':201, 'data':{ new_user_id }, 'message': 'User register Successfully' })
@@ -30,6 +34,32 @@ export const userRegister = async(req,res) => {
     }
 }
 
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ * @returns 
+ */
+// Email-verify controller
+export const userEmailVerify = async(req,res) => {
+    try {
+        const { user_token } = req.params
+        if(!user_token){
+            return res.status(400).json({ 'StatusCode':400, 'error':"Token not found" })
+        }
+
+        // User email verification 
+       const { status,user_id,message } =  await userEmailVerification(user_token)
+       if(!status){
+            return res.status(400).json({ 'StatusCode':400, 'error':"User is not verified no token found" })
+       }
+
+       res.status(200).json({ 'StatusCode':200, 'message':"Email Verified Successfully" || message, user_id:user_id})
+        
+    } catch (error) {
+        console.log("Error while verify the user email",error?.message)
+    }
+}
 /**
  * 
  * @param {import('express').Request} req 
@@ -51,6 +81,11 @@ export const userLogin = async (req,res) => {
          if(!status){
             return res.status(404).json({ 'StatusCode': 404, 'error': `User with email ${user_email} is not exists. Please try another email !` })
          }
+
+        // Users email is verified or not
+         if(!existing_user?.is_verified){
+            return res.status(400).json({ 'StatusCode': 400, 'message': "User is not verified. Please verify your email" })
+       }
 
         // verify the user's password
        const { Status,StatusCode } = await isPasswordMatch(user_password,user_email)

@@ -127,12 +127,6 @@ export const userDelete = async(req,res) => {
     try {
         const { userId } = req.params
 
-        res.cookie("access_token","",{
-            httpOnly:true,
-            secure:true,
-            maxAge:0
-        })
-
        const [deleted_user] = await db.delete(userTable).where(eq(userTable.user_id,userId)).returning({
             user_id:userTable.user_id,
             user_name:userTable.user_name

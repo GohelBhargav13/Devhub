@@ -49,7 +49,7 @@ const DashBoard = () => {
                 </div>
                  <div className='bg-linear-to-br from-slate-800 via-slate-700 to-slate-900 p-3 rounded-xl border-r-2 border-b-4 border-white border-r-cyan-300 text-center'>
                        <div className='w-full h-auto p-8 bg-slate-800 rounded-3xl border-t-2 border-l-4 border-white border-l-cyan-300'>
-                        <p className='font-bold font-mono text-[22px]'>Total Active:</p>
+                        <p className='font-bold font-mono text-[22px]'>Current Active:</p>
                         <p className='text-[30px]'>{total_active}+</p>
                     </div>
                 </div>

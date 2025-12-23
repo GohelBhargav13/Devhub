@@ -8,6 +8,7 @@ import { useAuthStore } from "../store/auth.store.js";
 const HomePage = () => {
   const [allPosts, setAllPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchWord,setSearchWord] = useState("")
   const userData = useAuthStore((state) => state.userData); // Get from Zustand instead of props
 
   useEffect(() => {
@@ -34,6 +35,8 @@ const HomePage = () => {
     fetchPosts(); 
   }, []);
 
+  const searchPost = allPosts.filter((post) => post.post_desc.toLowerCase().includes(searchWord.toLowerCase()))
+
   if(!userData){
     return <div>Loading...</div>;
   }
@@ -56,6 +59,7 @@ const HomePage = () => {
               type="text"
               placeholder="search..."
               className="bg-slate-950 text-white p-2 h-12 w-90 border-2 border-white rounded-lg outline-none hover:border-2 hover:border-b-2 hover:border-b-cyan-300 hover:border-r-2 hover:border-r-cyan-300 hover:duration-300"
+              onChange={(e) => setSearchWord(e.target.value)}
             />            
           </div>
 
@@ -69,10 +73,10 @@ const HomePage = () => {
             </div>
           ) : (
             <div className="grid grid-cols-3 gap-2 p-4 mt-10 text-white">
-              {allPosts.map((post) => (
+              {searchPost.map((post) => (
                 <div 
                   key={post?.post_at} 
-                  className="bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 h-80 rounded-2xl hover:scale-105 hover:duration-300 hover:border-r-2 hover:border-slate-500 hover:border-b-2"
+                  className="bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 h-auto rounded-2xl hover:scale-105 hover:duration-300 hover:border-r-2 hover:border-slate-500 hover:border-b-2"
                 >
                   <div className="flex gap-5 p-4 w-full">
                     <div className="p-1 rounded-lg">
@@ -85,7 +89,7 @@ const HomePage = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="bg-linear-to-br from-slate-700 to-slate-950 h-57 p-4 w-full rounded-xl rounded-t-3xl py-8 border-t-4 border-t-white">
+                  <div className="bg-linear-to-br from-slate-700 to-slate-950 h-fit p-4 w-full rounded-xl rounded-t-3xl py-8 border-t-4 border-t-white">
                     <p className="mb-7 font-mono text-[16px]">{post?.post_desc}</p>
                     {post?.post_link && (
                       <>

@@ -8,11 +8,13 @@ const RegisterPage = () => {
     const [password,setPassword] = useState("")
     const [username,setUsername] = useState("")
     const [showPassword,setShowPassword] = useState(false)
+    const [isProcessing,setIsProcessing] = useState(false)
 
     // User Register API handler
     const handlesubmit = async(e) => {
        e.preventDefault()
        try {
+            setIsProcessing(true)
             const responseData = await userRegisterApi({ user_email:email, user_name:username,user_password:password })
             if(responseData?.StatusCode >= 400){
                 toast.error(responseData?.error)
@@ -23,8 +25,10 @@ const RegisterPage = () => {
                 return
             }
        } catch (error) {
+            setIsProcessing(false)
             console.log("Error while register a user in RegisterPage",error?.message)
        }finally{
+            setIsProcessing(false)
             setEmail("")
             setPassword("")
             setUsername("")
@@ -99,9 +103,9 @@ const RegisterPage = () => {
         <div>
             <button type="submit"
             disabled={ !email || !password || !username }
-            className={`text-[18px] font-mono font-bold text-white bg-cyan-500  ${ (!email || !password || !username ) ? "disabled:bg-slate-400 disabled:cursor-not-allowed" : "bg-linear-to-br from-cyan-700 via-cyan-400 to-cyan-700 hover:bg-cyan-600 cursor-pointer hover:shadow-2xl" } w-full max-w-md mt-6 p-3 rounded-lg shadow-lg transition-all`}
+            className={`text-[18px] font-mono font-bold text-white ${ (!email || !password || !username || isProcessing ) ? "bg-slate-400 disabled:cursor-not-allowed" : "bg-linear-to-br from-cyan-700 via-cyan-400 to-cyan-700 hover:bg-cyan-600 cursor-pointer hover:shadow-2xl" } w-full max-w-md mt-6 p-3 rounded-lg shadow-lg transition-all`}
             >
-                Register
+                { isProcessing ? 'Processing...' : "Register" }
             </button>
         </div>
         <p className="font-mono text-[16px] mt-4 text-center">Do You Have Account? <a href="/login" className="font-bold text-blue-700 underline">Login</a></p>

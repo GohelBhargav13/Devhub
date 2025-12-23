@@ -30,8 +30,8 @@ const LoginPage = () => {
             return
         }
     } catch (error) {
-        console.log("Error while login in the platform in LoginPage",error)
         setProcessing(false)
+        console.log("Error while login in the platform in LoginPage",error)
     }finally{
       setProcessing(false)
       setEmail("")
@@ -93,8 +93,8 @@ const LoginPage = () => {
 
         <div>
             <button type="submit"
-            disabled={ !email || !password }
-            className={`text-[18px] font-mono font-bold text-white bg-cyan-500  ${ (!email || !password || processing) ? "disabled:bg-slate-400 disabled:cursor-not-allowed" : "bg-linear-to-br from-cyan-700 via-cyan-400 to-cyan-700 hover:bg-cyan-600 cursor-pointer hover:shadow-2xl" } w-full max-w-md mt-6 p-3 rounded-lg shadow-lg transition-all`}
+            disabled={ !email || !password || processing }
+            className={`text-[18px] font-mono font-bold text-white ${ (!email || !password || processing) ? "disabled:bg-slate-400 disabled:cursor-not-allowed" : "bg-linear-to-br from-cyan-700 via-cyan-400 to-cyan-700 hover:bg-cyan-600 cursor-pointer hover:shadow-2xl"} w-full max-w-md mt-6 p-3 rounded-lg shadow-lg transition-all`}
             >
                 { processing ? 'Processing...' : 'Login' }
             </button>

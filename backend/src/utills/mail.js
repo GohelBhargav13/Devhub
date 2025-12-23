@@ -14,7 +14,7 @@ export const sendEmail = async (options) => {
     product: {
       // Appears in header & footer of e-mails
       name: "DevHub",
-      link: "http://localhost:5173/",
+      link: "https://devhub-self.vercel.app/",
     },
   });
 
@@ -78,7 +78,7 @@ export const verificationEmailTemplate = (username, verifyURL) => {
         button: {
           color: "#708090", // Slate-Gray like in screenshot
           text: "Confirm your account",
-          link: `http://localhost:5173/email-verify/${verifyURL}`,
+          link: `https://devhub-self.vercel.app/email-verify/${verifyURL}`,
         },
       },
       outro:

@@ -66,9 +66,9 @@ const UserPost = () => {
           allPosts.map((post) => (
             <div
               key={post?.post_id}
-              className="bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 h-80 rounded-2xl hover:scale-105 hover:duration-300 hover:border-r-2 hover:border-slate-500 hover:border-b-2"
+              className="bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 h-fit rounded-2xl hover:scale-105 hover:duration-300 hover:border-r-2 hover:border-slate-500 hover:border-b-2"
             >
-              <div className="flex gap-5 p-4 w-full">
+              <div className="flex gap-5 p-4 w-full h-fit">
                 <div className="p-1 rounded-lg">
                   <UserAvatar username={post?.user_name} size={50} />
                 </div>
@@ -86,7 +86,7 @@ const UserPost = () => {
                 onClick={() => deletePostHandler(post?.post_id)}
                 > <Trash /></button>
               </div>
-              <div className="bg-linear-to-br from-slate-700 to-slate-950 h-57 p-4 w-full rounded-xl rounded-t-3xl py-8 border-t-4 border-t-white">
+              <div className="bg-linear-to-br from-slate-700 to-slate-950 h-fit p-4 w-full rounded-xl rounded-t-3xl py-8 border-t-4 border-t-white">
                 <p className="mb-7 font-mono text-[16px]">{post?.post_desc}</p>
                 {post?.post_link && (
                   <>

@@ -1,3 +1,4 @@
+import { socket } from "../server/server.js"
 import { apiClient } from "../services/axios.js"
 
 // User Login API
@@ -15,6 +16,7 @@ export const userLoginApi = async({ userEmail,userPassword }) => {
             return { 'StatusCode': actualRes?.StatusCode,'error':actualRes?.error, 'status':false }
        }
        if(actualRes?.StatusCode == 200){
+        
             return { 'StatusCode':actualRes?.StatusCode, 'message':actualRes?.message, 'status': actualRes?.StatusCode < 400 }
        } 
        return { 'StatusCode':400,'error':"No Response from the backend" }
@@ -48,11 +50,31 @@ export const userRegisterApi = async({ user_name,user_email,user_password }) => 
        const actualRes = responseData?.data
 
        if(actualRes?.StatusCode === 201){
-            return { 'StatusCode':201, 'message': `Registration completed 🎉`}
+            socket.emit("newUser",{ user_name,user_email,user_password,message:"New User Registered" })
+            return { 'StatusCode':201, 'message': `Registration completed 🎉, Please Check Email`}
        }
         
     } catch (error) {
         console.log("Error while register a user in api",error?.response?.data?.error)
         return { 'StatusCode':400, 'error': error?.response?.data?.error}
+    }
+}
+
+// email verify func
+export const UserEmailVerify = async(email_token) => {
+    try {
+        const responseData = await apiClient.get(`/user/email-verify/${email_token}`)
+        const actualRes = responseData?.data
+
+        if(actualRes?.StatusCode >= 400){
+            return { 'status':false, 'error': "Email is not verified" }
+        }
+        if(actualRes?.StatusCode === 200){
+            return { 'status':true, 'message': "Email is Verified" }
+        }
+        
+    } catch (error) {
+        console.log("Error while verifying the users email from the api",error)
+        return { 'status':false, 'error':error?.response?.data?.error || error?.response?.data?.message }
     }
 }

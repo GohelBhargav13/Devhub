@@ -1,5 +1,5 @@
 import { Routes,Route } from "react-router-dom"
-import LoginPage from "./pages/loginPage.jsx"
+import LoginPage from "./pages/LoginPage.jsx"
 import { Toaster } from "react-hot-toast"
 import HomePage from "./pages/HomePage.jsx"
 import RegisterPage from "./pages/RegisterPage.jsx"
@@ -11,6 +11,7 @@ import NewPost from "./pages/NewPost.jsx"
 import DashBoard from "./pages/AdminPages/DashBoard.jsx"
 import AdminProtectRoute from "./services/AdminProtectRoute.jsx"
 import UserDetails from "./pages/AdminPages/UserDetails.jsx"
+import EmailVerifiy from "./pages/EmailVerifiy.jsx"
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
           <Route path="/" element={ <ProtectRoute> <HomePage /> </ProtectRoute>} />
           <Route path="/login" element={ <LoginPage /> } />
           <Route path="/register" element={ <RegisterPage /> } />
+          <Route path="/email-verify/:emailToken" element={ <EmailVerifiy /> } />
           <Route path="/get-profile" element={ <ProtectRoute> <UserProfile /> </ProtectRoute> } />
           <Route path="/new-post" element={ <ProtectRoute> <NewPost /> </ProtectRoute> } />
           <Route path="/admin/dashboard" element={ <ProtectRoute> <AdminProtectRoute> <DashBoard /> </AdminProtectRoute> </ProtectRoute> } />

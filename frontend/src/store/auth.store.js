@@ -84,21 +84,21 @@ export const useAuthStore = create((set,get) => ({
 
     // delete User
     deleteUser: async(user_id) => {
-        try {
-                const responseData = await apiClient.delete(`/admin/delete-user/${user_id}`)
-                const actualRes = responseData?.data
+    try {
+            const responseData = await apiClient.delete(`/admin/delete-user/${user_id}`)
+            const actualRes = responseData?.data
 
-                if(actualRes?.StatusCode >= 400){
-                    return { 'status':false, 'error':actualRes?.error, 'deletedu_details':null }
-                }
-
-                if(actualRes?.StatusCode === 200){
-                    return { 'status':true, 'message':actualRes?.message, 'deletedu_details':actualRes?.data }
-                }
-                
-            } catch (error) {
-                console.log("Error while deleting a user with the api",error)
-                return { 'status':false, 'error':error?.response?.data?.error || error?.response?.data?.message }
+            if(actualRes?.StatusCode >= 400){
+                return { 'status':false, 'error':actualRes?.error, 'deletedu_details':null }
             }
+
+            if(actualRes?.StatusCode === 200){
+                return { 'status':true, 'message':actualRes?.message, 'deletedu_details':actualRes?.data }
+            }
+            
+        } catch (error) {
+            console.log("Error while deleting a user with the api",error)
+            return { 'status':false, 'error':error?.response?.data?.error || error?.response?.data?.message }
+        }
     }
 }))

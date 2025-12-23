@@ -18,6 +18,8 @@ export const userTable = pgTable("users", {
   salt: text().notNull(),
   internal_username: varchar({ length: 255 }).notNull(),
   is_active: boolean().default(false),
+  is_verified: boolean().default(false),
+  email_verificationToken: text(),
   user_role: userRoleEnum().default("USER").notNull(),
   created_at: timestamp().defaultNow().notNull(),
 });

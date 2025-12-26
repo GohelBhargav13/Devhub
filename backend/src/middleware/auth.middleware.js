@@ -18,7 +18,6 @@ export const checkTokenExists = async(req,res,next) => {
         // console.log(req.cookies?.access_token)
         const user_access_token = req.cookies?.access_token
 
-        console.log(user_access_token)
         // console.log(user_access_token)
         if(!user_access_token){
             next()
@@ -40,11 +39,8 @@ export const checkTokenExists = async(req,res,next) => {
        const decoded = jwt.verify(user_access_token,process.env.JWT_SECRET)
        const [user_details] = await db.select().from(userTable).where(eq(userTable.user_id,decoded.user_id))
 
-
        req.user = user_details
-
        next()
-        
     } catch (error) {
         console.log("Error while authenticate using a bearer token",error.message)
     }

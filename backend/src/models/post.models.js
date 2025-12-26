@@ -5,6 +5,7 @@ export const postTable = pgTable("posts",{
     post_id: uuid().primaryKey().defaultRandom(),
     post_description: text().notNull(),
     post_link: varchar({ length:255 }),
+    post_tags: text().array().default([]),
     user_id: uuid().references(() => userTable.user_id, { onDelete: "cascade" }),
     created_at: timestamp().defaultNow()
 })

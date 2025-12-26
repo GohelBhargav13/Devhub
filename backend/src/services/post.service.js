@@ -1,15 +1,18 @@
 import { postTable,userTable } from "../models/index.js"
 import { db } from "../db_config/db_config_postgres.js"
-import { and, desc, eq } from "drizzle-orm"
+import { and, cosineDistance, desc, eq } from "drizzle-orm"
 
 // New Post function
 export const addNewPost = async(...postDetails) => {
-    const [post_description,post_link,user_id] = postDetails
+    const [post_description,post_link,user_id,post_tags] = postDetails
+    const post_tags_array = post_tags.split(",")
+
     try {
         const [new_post] = await db.insert(postTable).values({
             post_description,
             post_link,
-            user_id
+            user_id,
+            post_tags:post_tags_array
         }).returning({
             new_post_id:postTable.post_id
         })
@@ -31,7 +34,8 @@ export const fetchAllPosts = async() => {
             post_link:postTable.post_link,
             post_at:postTable.created_at,
             user_name:userTable.user_name,
-            internal_username:userTable.internal_username
+            internal_username:userTable.internal_username,
+            post_tags:postTable.post_tags
         }).from(postTable).innerJoin(userTable, eq(userTable.user_id,postTable.user_id)).orderBy(desc(postTable.created_at))
 
         if(all_available_posts.length === 0){
@@ -54,7 +58,8 @@ export const loginUserPosts = async (user_id) => {
             post_link:postTable.post_link,
             post_at:postTable.created_at,
             user_name:userTable.user_name,
-            internal_username:userTable.internal_username
+            internal_username:userTable.internal_username,
+            post_tags:postTable.post_tags
         }).from(postTable).leftJoin(userTable,eq(postTable.user_id,user_id)).where(eq(userTable.user_id,user_id))
 
         if(users_post.length === 0){

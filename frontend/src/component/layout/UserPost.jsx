@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import UserAvatar from "./UserAvatar.jsx";
 import { Trash } from "lucide-react"
 import { deletePost } from "../../apis/post.api.js"
+import { tagBadgesBg } from "../../services/tagBadge.js"
 
 const UserPost = () => {
   const [allPosts, setAllPosts] = useState([]);
@@ -100,6 +101,13 @@ const UserPost = () => {
                     </a>
                   </>
                 )}
+                 <div className="w-full flex flex-row gap-1">
+                    {post.post_tags && post?.post_tags?.map((tag,i) => (
+                      <div key={i} className="mt-3">
+                        <p className={`${tagBadgesBg[i % post?.post_tags?.length]} py-1 rounded text-lg`}>#{ tag }</p>
+                      </div>
+                    ))}
+                    </div>
                 <p className="text-end mt-4">
                   {"~ "}
                   {post?.post_at

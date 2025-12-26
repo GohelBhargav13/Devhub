@@ -41,10 +41,10 @@ export const loginUserPosts = async() => {
 }
 
 // create new post 
-export const createNewPost = async({ post_description,post_link }) => {
+export const createNewPost = async({ post_description,post_link,post_tags }) => {
     try {
 
-        const responseData = await apiClient.post("/post/create-post",{ post_description,post_link })
+        const responseData = await apiClient.post("/post/create-post",{ post_description,post_link,post_tags })
         const actual_data = responseData?.data
 
         if(actual_data?.StatusCode >= 400){

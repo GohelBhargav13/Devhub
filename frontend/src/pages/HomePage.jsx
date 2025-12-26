@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SideBar from "../component/layout/SideBar.jsx";
 import UserAvatar from "../component/layout/UserAvatar.jsx";
 import { fetchAllPosts } from "../apis/post.api.js";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/auth.store.js";
+import { tagBadgesBg } from "../services/tagBadge.js"
 
 const HomePage = () => {
   const [allPosts, setAllPosts] = useState([]);
@@ -35,7 +36,7 @@ const HomePage = () => {
     fetchPosts(); 
   }, []);
 
-  const searchPost = allPosts.filter((post) => post.post_desc.toLowerCase().includes(searchWord.toLowerCase()))
+  const searchPost = allPosts.filter((post) => post.post_desc.toLowerCase().includes(searchWord.toLowerCase()) || post.post_tags.filter((tag) => tag.toLowerCase().includes(searchWord.toLowerCase())).length > 0);
 
   if(!userData){
     return <div>Loading...</div>;
@@ -57,7 +58,7 @@ const HomePage = () => {
           <div className="mx-auto">
             <input 
               type="text"
-              placeholder="search..."
+              placeholder="Search..."
               className="bg-slate-950 text-white p-2 h-12 w-90 border-2 border-white rounded-lg outline-none hover:border-2 hover:border-b-2 hover:border-b-cyan-300 hover:border-r-2 hover:border-r-cyan-300 hover:duration-300"
               onChange={(e) => setSearchWord(e.target.value)}
             />            
@@ -99,6 +100,13 @@ const HomePage = () => {
                         </a>
                       </>
                     )}
+                    <div className="w-full flex flex-row gap-1">
+                    {post.post_tags && post?.post_tags?.map((tag,i) => (
+                      <div key={i} className="mt-3">
+                        <p className={`${tagBadgesBg[i % post?.post_tags?.length]} py-1 rounded text-lg`}>#{ tag }</p>
+                      </div>
+                    ))}
+                    </div>
                     <p className="text-end mt-4">{"~ "}{post?.post_at ? new Date(post?.post_at).toLocaleDateString() : "N/A"}</p>
                   </div>
                 </div>

@@ -29,13 +29,13 @@ const LoginPage = () => {
             navigate("/")
             return
         }
+        setEmail("")
+        setPassword("")
     } catch (error) {
         setProcessing(false)
         console.log("Error while login in the platform in LoginPage",error)
     }finally{
       setProcessing(false)
-      setEmail("")
-      setPassword("")
     }
   };
 

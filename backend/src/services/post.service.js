@@ -1,16 +1,16 @@
 import { postTable,userTable } from "../models/index.js"
 import { db } from "../db_config/db_config_postgres.js"
-import { and, cosineDistance, desc, eq } from "drizzle-orm"
+import { and, desc, eq } from "drizzle-orm"
 
 // New Post function
 export const addNewPost = async(...postDetails) => {
-    const [post_description,post_link,user_id,post_tags] = postDetails
+    const [post_description,post_links,user_id,post_tags] = postDetails
     const post_tags_array = post_tags.split(",")
 
     try {
         const [new_post] = await db.insert(postTable).values({
             post_description,
-            post_link,
+            post_links,
             user_id,
             post_tags:post_tags_array
         }).returning({
@@ -31,7 +31,7 @@ export const fetchAllPosts = async() => {
     try {
         const all_available_posts = await db.select({
             post_desc:postTable.post_description,
-            post_link:postTable.post_link,
+            post_links:postTable.post_links,
             post_at:postTable.created_at,
             user_name:userTable.user_name,
             internal_username:userTable.internal_username,
@@ -55,7 +55,7 @@ export const loginUserPosts = async (user_id) => {
         const users_post = await db.select({
             post_id:postTable.post_id,
             post_desc:postTable.post_description,
-            post_link:postTable.post_link,
+            post_links:postTable.post_links,
             post_at:postTable.created_at,
             user_name:userTable.user_name,
             internal_username:userTable.internal_username,

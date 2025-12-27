@@ -76,7 +76,7 @@ const UserDetails = () => {
         <div>
           <SideBar userData={userInfo} />
         </div>
-        <div className='flex flex-col gap-5 py-10 w-full h-screen overflow-y-scroll'>
+        <div className='flex flex-col gap-5 py-10 w-full h-screen'>
             <div className="text-3xl font-mono font-bold my-5 text-right mr-10">
             <p className="border-b-2 border-r-2 border-white rounded-4xl p-2 hover:border-b-4 hover:border-white px-5">
              <code>
@@ -134,7 +134,7 @@ const UserDetails = () => {
                 ))}
               </tbody>
               ) : (
-                <div className='w-full h-full text-center font-bold text-[20px] font-mono'>
+                <div className='w-full flex justify-center font-bold text-[20px] font-mono'>
                   <p>No Users Found</p>
                 </div>
               ) }

@@ -14,10 +14,10 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchPosts = async() => {
-      setIsLoading(true);
       try {
+        setIsLoading(true);
         const responseData = await fetchAllPosts();
-
+        console.log(responseData)
         if(!responseData?.status){
           toast.error(responseData?.error || "Failed to fetch posts");
           return;
@@ -43,12 +43,12 @@ const HomePage = () => {
   }
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row overflow-y-scroll">
       <div className="flex flex-row gap-4 w-full">
         <div className="">
           <SideBar userData={userData} />
         </div>
-        <div className="flex flex-col gap-3 w-full h-screen overflow-y-scroll">
+        <div className="flex flex-col gap-3 w-full h-screen">
           <div className="text-3xl font-mono font-bold my-11 text-right mr-10">
             <p className="border-b-2 border-r-2 border-white rounded-4xl p-2 hover:border-b-4 hover:border-white px-5">
               Good Morning, {userData?.user_name?.split(" ")[0]?.toUpperCase()}👋
@@ -65,16 +65,18 @@ const HomePage = () => {
           </div>
 
           {isLoading ? (
+            <>
             <div className="flex justify-center items-center h-96">
               <p className="text-white text-xl">Loading posts...</p>
             </div>
-          ) : allPosts.length === 0 ? (
+            </>
+          ) : (allPosts.length === 0 || searchPost.length === 0) ? (
             <div className="flex justify-center items-center h-96">
               <p className="text-white text-xl">No posts available</p>
             </div>
           ) : (
             <div className="grid grid-cols-3 gap-2 p-4 mt-10 text-white">
-              {searchPost.map((post) => (
+              {searchPost.map((post) =>  (
                 <div 
                   key={post?.post_at} 
                   className="bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 h-auto rounded-2xl hover:scale-105 hover:duration-300 hover:border-r-2 hover:border-slate-500 hover:border-b-2 w-fit"
@@ -90,20 +92,21 @@ const HomePage = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="bg-linear-to-br from-slate-700 to-slate-950 h-fit p-4 w-fit rounded-xl rounded-t-3xl py-8 border-t-4 border-t-white">
+                  <div className="bg-linear-to-br from-slate-700 to-slate-950 h-fit p-4 w-fit rounded-xl rounded-t-3xl border-t-4 border-t-white">
                     <p className="mb-7 font-mono text-[16px]">{post?.post_desc}</p>
-                    {post?.post_link && (
-                      <>
-                        <label>Following Links:</label>
-                        <a href={post?.post_link} className="text-blue-700 font-mono font-bold underline cursor-pointer p-1" target="_blank">
-                          {post?.post_link}
+                        <label className="font-mono text-[13px] font-bold">You can refer this links for further information: </label>
+                        <div className="flex flex-col">
+                        { post?.post_links?.map((link,i) => (
+                           <a href={link} key={i} className="text-blue-700 font-mono font-bold underline cursor-pointer p-1" target="_blank">
+                          {link}
                         </a>
-                      </>
-                    )}
-                    <div className="w-full flex flex-row gap-1">
+                        )) }
+                        </div>
+                    <p className="mt-1 font-mono font-bold text-[13px]">Related Tags:</p>
+                    <div className="w-fit grid grid-cols-2">
                     {post.post_tags && post?.post_tags?.map((tag,i) => (
                       <div key={i} className="mt-3">
-                        <p className={`${tagBadgesBg[i % post?.post_tags?.length]} py-1 rounded text-lg`}>#{ tag }</p>
+                        <p className={`${tagBadgesBg[i % post?.post_tags?.length]} py-1 rounded text-lg text-center`}>#{ tag }</p>
                       </div>
                     ))}
                     </div>

@@ -3,11 +3,12 @@ import { useAuthStore } from "../store/auth.store.js"
 import { createNewPost } from "../apis/post.api.js"
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
+import { X } from 'lucide-react'
 
 const NewPost = () => {
   const [postDesc,setPostDesc] = useState("")
-  const [postLink,setPostLink] = useState([])
   const [currLink,setCurrLink] = useState("")
+  const [postLink,setPostLink] = useState([]) 
   const [postags,setPostTags] = useState("")
   const [submitLoading,setSubmitLoading] = useState(false)
 
@@ -19,7 +20,7 @@ const NewPost = () => {
     e.preventDefault()
     try {
       setSubmitLoading(true)
-      const responseData = await createNewPost({ post_description:postDesc, post_link:currLink, post_tags:postags })
+      const responseData = await createNewPost({ post_description:postDesc, post_links:postLink, post_tags:postags })
       
       if(!responseData?.status){
         toast.error(responseData?.message || responseData?.error)
@@ -27,7 +28,7 @@ const NewPost = () => {
       }
       toast.success(responseData?.message)
       setPostDesc("")
-      setCurrLink("")
+      setPostLink([])
       setPostTags("")
     } catch (error) {
       console.log("Error while creating a new post from the NewPost file",error)
@@ -40,32 +41,24 @@ const NewPost = () => {
 
   // Handle a new link section
   const newLinkHandler = () => {
-    console.log({ currLink,postLink })
-    setPostLink(prev => [currLink,...prev])
-    console.log({ currLink,postLink })
+    if(!currLink.trim()) return
 
+    setPostLink((prev) => [...prev,currLink])
+    toast.success(`New Link ${currLink} Added`)
     setCurrLink("")
-    const input = document.createElement('input')
-    input.type = 'text'
-    input.style = 'border:2px solid white;padding:8px;border-radius:10px'
-    input.placeholder = 'Add Related Link...'
-    input.value = ""
-    input.value = currLink
-
-    input.addEventListener("change", function(e){
-        setCurrLink(e.target.value)
-    })
-  
-    console.log(postLink)
-    parent_comp.current.appendChild(input)
   }
   
+  // Handle a delete link
+  const handleDeleteLink = (index) => {
+    setPostLink((prev) => prev.filter((_,i) => i !== index))
+  }
+
   return (
-    <div className='flex flex-row gap-5'>
+    <div className='flex flex-row gap-5 overflow-y-scroll'>
         <div>
             <SideBar userData={userInfo} />
         </div>
-         <div className="flex flex-col gap-3 w-full h-screen overflow-y-scroll">
+         <div className="flex flex-col gap-3 w-full h-screen">
           <div className="text-3xl font-mono font-bold my-11 text-right mr-10">
             <p className="border-b-2 border-r-2 border-white rounded-4xl p-2 hover:border-b-4 hover:border-white px-5">
              excited to share something?,{ userInfo?.user_name.split(" ")[0]}{'📝'}
@@ -108,18 +101,23 @@ const NewPost = () => {
                   />
                   <button 
                   type='button'
-                  disabled={true}
-                  className='text-[18px] font-mono font-bold text-white hover:shadow-2xl w-20 max-w-md p-2 rounded-lg shadow-lg transition-all text-center mt-1 hover:duration-300 cursor-not-allowed bg-gray-600'
+                  disabled={ !currLink }
+                  className={`text-[18px] font-mono font-bold text-white hover:shadow-2xl w-20 max-w-md p-2 rounded-lg shadow-lg transition-all text-center mt-1 ${!currLink ? "bg-gray-600 cursor-not-allowed" : "bg-linear-to-br from-cyan-700 via-cyan-400 to-cyan-700 hover:bg-cyan-600 cursor-pointer hover:border-r-white hover:border-b-2 hover:border-b-white hover:duration-300 hover:shadow-2xl transition-all hover:border-r-2"} `}
                   onClick={newLinkHandler}
                   >Add</button>
                 </div>
               </div>
-               { postLink.map((post) => (
-                  <div key={post}>{ post }</div>
+               { postLink?.map((post,i) => (
+                  <>
+                    <div className='bg-slate-700 p-2 mt-2 rounded-lg flex flex-row justify-between mr-3' key={i}>
+                      <p className='font-mono text-[15px] font-bold text-white'>{ post }</p>
+                      <button className='mr-4 text-red-600 text-[18px] cursor-pointer' onClick={() => handleDeleteLink(i)}><X /></button>
+                    </div>
+                  </>
                 )) }
-              <button className={`text-[18px] font-mono font-bold text-white ${ !postDesc || !currLink || !postags || submitLoading ? "bg-gray-600 cursor-not-allowed" : "bg-linear-to-br from-cyan-700 via-cyan-400 to-cyan-700 hover:bg-cyan-600 cursor-pointer hover:border-r-white hover:border-b-2 hover:border-b-white hover:duration-300 hover:shadow-2xl transition-all hover:border-r-2" } w-fit max-w-md p-3 rounded-lg shadow-lg text-center mt-3`}
+              <button className={`text-[18px] font-mono font-bold text-white ${ !postDesc || postLink.length === 0 || !postags || submitLoading ? "bg-gray-600 cursor-not-allowed" : "bg-linear-to-br from-cyan-700 via-cyan-400 to-cyan-700 hover:bg-cyan-600 cursor-pointer hover:border-r-white hover:border-b-2 hover:border-b-white hover:duration-300 hover:shadow-2xl transition-all hover:border-r-2" } w-fit max-w-md p-3 rounded-lg shadow-lg text-center mt-3`}
               type='submit'
-              disabled={ !postDesc || !postLink || !postags || submitLoading }
+              disabled={ !postDesc || postLink.length === 0 || !postags || submitLoading }
               >
                 { submitLoading ? "Posting..." : "Post" }
               </button>

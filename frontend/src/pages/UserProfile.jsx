@@ -8,7 +8,7 @@ const UserProfile = () => {
   const userInfo = useAuthStore((state) => state.userData)
 
   return (
-    <div className='flex flex-row gap-5 overflow-visible'>
+    <div className='flex flex-row gap-5'>
       <div>
         <SideBar userData={userInfo} />
       </div>

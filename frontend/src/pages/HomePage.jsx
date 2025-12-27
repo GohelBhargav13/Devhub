@@ -5,6 +5,7 @@ import { fetchAllPosts } from "../apis/post.api.js";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/auth.store.js";
 import { tagBadgesBg } from "../services/tagBadge.js"
+import { Loader2 } from "lucide-react";
 
 const HomePage = () => {
   const [allPosts, setAllPosts] = useState([]);
@@ -43,12 +44,12 @@ const HomePage = () => {
   }
 
   return (
-    <div className="flex flex-row overflow-y-scroll">
+    <div className="flex flex-row">
       <div className="flex flex-row gap-4 w-full">
-        <div className="">
+        <div>
           <SideBar userData={userData} />
         </div>
-        <div className="flex flex-col gap-3 w-full h-screen">
+        <div className="flex flex-col gap-3 w-full h-screen min-h-screen">
           <div className="text-3xl font-mono font-bold my-11 text-right mr-10">
             <p className="border-b-2 border-r-2 border-white rounded-4xl p-2 hover:border-b-4 hover:border-white px-5">
               Good Morning, {userData?.user_name?.split(" ")[0]?.toUpperCase()}👋
@@ -66,8 +67,9 @@ const HomePage = () => {
 
           {isLoading ? (
             <>
-            <div className="flex justify-center items-center h-96">
-              <p className="text-white text-xl">Loading posts...</p>
+            <div className="flex justify-center gap-2 items-center h-96">
+              <Loader2 className="animate-spin duration-300" />
+              <p className="text-white text-[20px] font-mono font-bold">Loading posts...</p>
             </div>
             </>
           ) : (allPosts.length === 0 || searchPost.length === 0) ? (
@@ -92,7 +94,7 @@ const HomePage = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="bg-linear-to-br from-slate-700 to-slate-950 h-fit p-4 w-fit rounded-xl rounded-t-3xl border-t-4 border-t-white">
+                  <div className="h-auto p-4 w-fit rounded-xl rounded-t-3xl border-t-4 border-t-white">
                     <p className="mb-7 font-mono text-[16px]">{post?.post_desc}</p>
                         <label className="font-mono text-[13px] font-bold">You can refer this links for further information: </label>
                         <div className="flex flex-col">
@@ -110,8 +112,8 @@ const HomePage = () => {
                       </div>
                     ))}
                     </div>
-                    <p className="text-end mt-4">{"~ "}{post?.post_at ? new Date(post?.post_at).toLocaleDateString() : "N/A"}</p>
                   </div>
+                    <p className="flex justify-end font-mono mt-2 pt-2 pr-1 mr-2 pb-2 border-r-4 border-white rounded-lg">{"~ "}{post?.post_at ? new Date(post?.post_at).toLocaleDateString() : "N/A"}</p>
                 </div>
               ))}
             </div>

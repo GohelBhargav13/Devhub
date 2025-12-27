@@ -3,7 +3,7 @@ import { useAuthStore } from "../store/auth.store.js"
 import { createNewPost } from "../apis/post.api.js"
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import { X } from 'lucide-react'
+import { Trash, X } from 'lucide-react'
 
 const NewPost = () => {
   const [postDesc,setPostDesc] = useState("")
@@ -82,7 +82,7 @@ const NewPost = () => {
                 <textarea
                  name='post_tags'
                  rows={2}
-                 placeholder='A tags of topic react,frontend,design...'
+                 placeholder='A tags of topic for.ex(react,frontend,design)...'
                  value={postags}
                  onChange={(e) => setPostTags(e.target.value)}
                  className='border-2 border-white p-2 rounded-lg hover:border-r-2 hover:border-r-cyan-400 hover:border-b-2 hover:border-b-cyan-400 hover:duration-300 outline-none'
@@ -111,7 +111,7 @@ const NewPost = () => {
                   <>
                     <div className='bg-slate-700 p-2 mt-2 rounded-lg flex flex-row justify-between mr-3' key={i}>
                       <p className='font-mono text-[15px] font-bold text-white'>{ post }</p>
-                      <button className='mr-4 text-red-600 text-[18px] cursor-pointer' onClick={() => handleDeleteLink(i)}><X /></button>
+                      <button className='mr-4 text-white text-[18px] cursor-pointer' onClick={() => handleDeleteLink(i)}><Trash /></button>
                     </div>
                   </>
                 )) }

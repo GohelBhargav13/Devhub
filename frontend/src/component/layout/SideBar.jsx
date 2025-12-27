@@ -36,7 +36,7 @@ const SideBar = ({ userData }) => {
     }
 
   return (
-    <div className={`${isOpen ? "w-60" : "w-25"} bg-linear-to-br from-slate-950/65 opacity-80 via-slate-900 to-slate-950 min-h-screen border-r-4 border-r-white p-3 rounded-xl shadow-lg`}>
+    <div className={`${isOpen ? "w-60" : "w-25"} bg-linear-to-br from-slate-950/65 opacity-80 via-slate-900 to-slate-950 h-auto border-r-4 border-r-white p-3 rounded-xl shadow-lg`}>
       <div className="text-white font-bold font-mono">
           <div className="flex flex-row justify-end">
             {isOpen ? ( <X className="hover:p-1 cursor-pointer hover:duration-200 hover:border-b-2

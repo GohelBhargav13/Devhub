@@ -12,6 +12,7 @@ import DashBoard from "./pages/AdminPages/DashBoard.jsx"
 import AdminProtectRoute from "./services/AdminProtectRoute.jsx"
 import UserDetails from "./pages/AdminPages/UserDetails.jsx"
 import EmailVerifiy from "./pages/EmailVerifiy.jsx"
+import ActiveUserDeatils from "./pages/AdminPages/ActiveUserDeatils.jsx"
 
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
 
   return (
     <>
-      <div className='min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 text-white'>
+      <div className='min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 text-white overflow-y-scroll'>
         <Toaster position="bottom-left" reverseOrder={false} containerStyle={{
           animation:"ease-in-out",
           accentColor:"AccentColor"
@@ -50,6 +51,7 @@ function App() {
           <Route path="/get-profile" element={ <ProtectRoute> <UserProfile /> </ProtectRoute> } />
           <Route path="/new-post" element={ <ProtectRoute> <NewPost /> </ProtectRoute> } />
           <Route path="/admin/dashboard" element={ <ProtectRoute> <AdminProtectRoute> <DashBoard /> </AdminProtectRoute> </ProtectRoute> } />
+          <Route path="/admin/active-users" element={ <ProtectRoute> <AdminProtectRoute> <ActiveUserDeatils /> </AdminProtectRoute> </ProtectRoute> } />
           <Route path="/admin/user-data" element={ <ProtectRoute> <AdminProtectRoute> <UserDetails /> </AdminProtectRoute> </ProtectRoute> } />
         </Routes>
       </div>

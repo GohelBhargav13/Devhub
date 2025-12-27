@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { loginUserPosts } from "../../apis/post.api.js"
 import toast from "react-hot-toast";
 import UserAvatar from "./UserAvatar.jsx";
-import { Trash } from "lucide-react"
+import { Loader2, Trash } from "lucide-react"
 import { deletePost } from "../../apis/post.api.js"
 import { tagBadgesBg } from "../../services/tagBadge.js"
 
@@ -52,7 +52,10 @@ const UserPost = () => {
 
   if(isLoading){
     return (
-        <div className="text-center my-auto">Loading...</div>
+        <div className="flex gap-2 p-1 justify-center mt-7">
+          <Loader2 className="animate-spin duration-300" />
+          <p className="font-bold font-mono text-[20px]">Loading Posts...</p>
+        </div>
     )
   }
   return (
@@ -67,7 +70,7 @@ const UserPost = () => {
           allPosts.map((post) => (
             <div
               key={post?.post_id}
-              className="bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 h-fit rounded-2xl hover:scale-105 hover:duration-300 hover:border-r-2 hover:border-slate-500 hover:border-b-2"
+              className="bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 h-auto rounded-2xl hover:scale-105 hover:duration-300 hover:border-r-2 hover:border-slate-500 hover:border-b-2"
             >
               <div className="flex gap-5 p-4 w-full h-fit">
                 <div className="p-1 rounded-lg">

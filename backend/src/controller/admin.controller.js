@@ -35,8 +35,12 @@ export const allPostCount = async(req,res) => {
 // Total active users on the platform controller
 export const allActiveUsers = async(req,res) => {
     try {
-        const active_users = await db.select().from(userTable).where(eq(userTable.is_active,true))
-        return res.status(200).json({ 'StausCode':200, 'total_active_users':active_users.length })
+        const active_users = await db.select({
+            user_id:userTable.user_id,
+            user_name:userTable.user_name,
+            user_internalName:userTable.internal_username
+        }).from(userTable).where(eq(userTable.is_active,true))
+        return res.status(200).json({ 'StausCode':200, 'total_active_users':active_users.length,'active_user_details':active_users })
 
     } catch (error) {
         console.log("Error while fetching a active user count",error)

@@ -89,22 +89,25 @@ const UserPost = () => {
               </div>
               <div className="bg-linear-to-br from-slate-700 to-slate-950 h-fit p-4 w-full rounded-xl rounded-t-3xl py-8 border-t-4 border-t-white">
                 <p className="mb-7 font-mono text-[16px]">{post?.post_desc}</p>
-                {post?.post_link && (
-                  <>
-                    <label>Following Links:</label>
-                    <a
-                      href={post?.post_link}
-                      className="text-blue-700 font-mono font-bold underline cursor-pointer p-1"
-                      target="_blank"
-                    >
-                      {post?.post_link}
-                    </a>
-                  </>
-                )}
-                 <div className="w-full flex flex-row gap-1">
+                <div className="flex flex-col">
+                   <label className="font-mono text-[13px]">Provided Links:</label>
+                  { post?.post_links.length > 0 && post?.post_links.map((link,i) => (
+                    <>
+                      <a
+                        href={link} 
+                        key={i}
+                        className="text-blue-700 font-mono font-bold underline cursor-pointer p-1"
+                        target="_blank"
+                      >
+                        {link}
+                      </a>
+                    </>
+                  ))}
+                  </div>
+                 <div className="w-fit grid grid-cols-2">
                     {post.post_tags && post?.post_tags?.map((tag,i) => (
                       <div key={i} className="mt-3">
-                        <p className={`${tagBadgesBg[i % post?.post_tags?.length]} py-1 rounded text-lg`}>#{ tag }</p>
+                        <p className={`${tagBadgesBg[i % post?.post_tags?.length]} rounded text-lg`}>#{ tag }</p>
                       </div>
                     ))}
                     </div>

@@ -1,8 +1,8 @@
-import {  Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react"
 
 const ActiveUserDeatils = ({ activeUsers }) => {
 
-    if(activeUsers.length === 0){
+    if(activeUsers?.length === 0){
         return (
             <div className="flex flex-row justify-center w-full gap-2 mt-7 h-auto">
                 <Loader2 className="animate-spin duration-300" />

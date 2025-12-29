@@ -2,6 +2,7 @@ import  { useState } from 'react'
 import { MessageSquare, Lock, Eye, EyeClosed, User } from "lucide-react"
 import { userRegisterApi } from "../apis/auth.api.js"
 import toast from 'react-hot-toast'
+import { useNavigate } from "react-router-dom"
 
 const RegisterPage = () => {
     const [email,setEmail] = useState("")
@@ -9,6 +10,7 @@ const RegisterPage = () => {
     const [username,setUsername] = useState("")
     const [showPassword,setShowPassword] = useState(false)
     const [isProcessing,setIsProcessing] = useState(false)
+    const navigate = useNavigate()
 
     // User Register API handler
     const handlesubmit = async(e) => {
@@ -22,6 +24,7 @@ const RegisterPage = () => {
             }
             if(responseData?.StatusCode >= 200){
                 toast.success(responseData?.message)
+                navigate("/login")
                 return
             }
        } catch (error) {

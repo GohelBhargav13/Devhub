@@ -36,7 +36,7 @@ const SideBar = ({ userData }) => {
     }
 
   return (
-    <div className={`${isOpen ? "w-60" : "w-25"} bg-linear-to-br from-slate-950/65 opacity-80 via-slate-900 to-slate-950 h-auto border-r-4 border-r-white p-3 rounded-xl shadow-lg`}>
+    <div className={`${isOpen ? "w-60" : "w-25"} bg-linear-to-br from-slate-950/65 opacity-80 via-slate-900 to-slate-950 h-auto min-h-screen border-r-4 border-r-white p-3 rounded-xl shadow-lg`}>
       <div className="text-white font-bold font-mono">
           <div className="flex flex-row justify-end">
             {isOpen ? ( <X className="hover:p-1 cursor-pointer hover:duration-200 hover:border-b-2
@@ -69,7 +69,7 @@ const SideBar = ({ userData }) => {
                     </button>))
                    ))}
           </div>
-          <div className={`flex flex-col ${isOpen ? "mt-30" : "mt-40"}`}>
+           <div className={`flex flex-col h-full w-full ${isOpen ? "justify-end" : "mt-16"}`}>
               <div className="bg-slate-950 text-white border-2 border-white rounded-lg p-3">
               {isOpen ? ( <div className="flex flex-row gap-4 text-sm">
                     <UserAvatar username={userData?.user_name} />
@@ -85,7 +85,7 @@ const SideBar = ({ userData }) => {
               </div>
               <div>
                 { isOpen ? (
-                     <button className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white mt-3" onClick={handleLogout}>Logout</button>
+                     <button className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white mt-3 items-center" onClick={handleLogout}>Logout</button>
                 ) : (
                   <button className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white mt-4" onClick={handleLogout}>
                   <LogOut size={30} />

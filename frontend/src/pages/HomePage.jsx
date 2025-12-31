@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import SideBar from "../component/layout/SideBar.jsx";
 import UserAvatar from "../component/layout/UserAvatar.jsx";
 import { fetchAllPosts } from "../apis/post.api.js";
@@ -12,10 +12,9 @@ const HomePage = () => {
   const [allPosts, setAllPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchWord, setSearchWord] = useState("");
-  const [isShow,setIsShow] = useState(false)
-  const [isLinkShow,setIsLinkShow] = useState(false)
   const [greetMessageShow,setGreetMessageShow] = useState("")
-  const [isShowDesc,setIsShowDesc] = useState("")
+  const [isShowDesc,setIsShowDesc] = useState(null)
+  const [isShowLink,setIsShowLink] = useState(null)
   const userData = useAuthStore((state) => state.userData); // Get from Zustand instead of props
 
   useEffect(() => {
@@ -43,6 +42,7 @@ const HomePage = () => {
     fetchPosts();
   }, []);
 
+  // post search functionality
   const searchPost = allPosts.filter(
     (post) =>
       post.post_desc.toLowerCase().includes(searchWord.toLowerCase()) ||
@@ -52,13 +52,13 @@ const HomePage = () => {
   );
 
   // Handle a show more/less for post description
-  const handleShowDesc = () => {
-    setIsShow(!isShow)
+  const handleShowDesc = (post_id) => {
+    setIsShowDesc(prev => prev === post_id ? null : post_id)
   }
 
   // Handle a show more/less for post links
-  const handleShowLink = () => {
-    setIsLinkShow(!isLinkShow)
+  const handleShowLink = (post_id) => {
+    setIsShowLink(prev => prev === post_id ? null : post_id)
   }
 
   if (!userData) {
@@ -103,7 +103,7 @@ const HomePage = () => {
           ) : (
             <div className="grid grid-cols-3 gap-2 p-4 mt-10 text-white">
               {searchPost.map((post,i) =>  (
-                <div className="w-fit h-fit bg-linear-to-br from-slate-800 via-slate-850 to-slate-900 rounded-lg border-2 border-slate-500 hover:scale-105 hover:duration-300 hover:border-r-4 hover:border-b-4 hover:border-r-slate-200 hover:border-b-slate-200">
+                <div className="w-fit h-fit bg-linear-to-br from-slate-800 via-slate-850 to-slate-900 rounded-lg border-2 border-slate-500 hover:scale-105 hover:duration-300 hover:border-r-4 hover:border-b-4 hover:border-r-slate-200 hover:border-b-slate-200" key={i}>
                   <div className="flex flex-col gap-3 p-2">
                     <div className="flex gap-5 border-b-2 border-slate-400 p-1 rounded-xl">
                       <div>
@@ -127,12 +127,12 @@ const HomePage = () => {
                       <p className="font-mono text-[16px] text-start">
                         {post?.post_desc?.length > 90 ? (
                             <>
-                             { isShow ? post?.post_desc : post?.post_desc.slice(0, 70) + "..." }
+                             { isShowDesc === post.post_id ? post.post_desc : post.post_desc.slice(0,70) + "..." }
                               <button
-                                onClick={() => handleShowDesc(i)}
+                                onClick={() => handleShowDesc(post.post_id)}
                                 className="text-blue-500 cursor-pointer hover:text-blue-700 ml-1 font-semibold"
                               >
-                                {isShow ? "show less" : "show more"}
+                                { isShowDesc === post.post_id ? "show less" : "show more"}
                               </button>
                             </>
                           ) : (
@@ -154,15 +154,15 @@ const HomePage = () => {
                             >
                               {link.length > 40 ? (
                                 <>
-                                  { isLinkShow ? link : link.slice(0, 20) + "..." }
+                                  { isShowLink === post.post_id ? link : link.slice(0, 20) + "..." }
                                 </>
                               ) : (
                                 link
                               )  }
                             </a>
                             { link.length > 40 && ( 
-                              <button type="button" className="ml-auto" onClick={handleShowLink}>
-                                    { isLinkShow ? <ChevronUp /> : <ChevronDown /> }
+                              <button type="button" className="ml-auto" onClick={() => handleShowLink(post.post_id)}>
+                                    { isShowLink === post.post_id ? <ChevronUp /> : <ChevronDown /> }
                              </button>) }
                             </>
                           ))}

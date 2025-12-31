@@ -87,7 +87,7 @@ const SideBar = ({ userData }) => {
                 { isOpen ? (
                   <div className="flex gap-2">
                      <button className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white mt-3 items-center" onClick={handleLogout}>Logout</button>
-                     <button className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white mt-3 items-center">Delete Acc</button>
+                     <button onClick={() => naviagte("/delete-user-account")} className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white mt-3 items-center">Delete Acc</button>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-2 items-center">

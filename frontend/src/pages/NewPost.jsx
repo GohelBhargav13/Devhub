@@ -54,7 +54,7 @@ const NewPost = () => {
   }
 
   return (
-    <div className='flex flex-row gap-5 overflow-y-scroll'>
+    <div className='flex flex-row gap-5'>
         <div>
             <SideBar userData={userInfo} />
         </div>

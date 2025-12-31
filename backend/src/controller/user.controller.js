@@ -1,4 +1,4 @@
-import { createNewUser,isPasswordMatch,isUserExisting,changeUserStatusLogin,changeUserStatusLogout,userEmailVerification } from  "../services/user.service.js"
+import { createNewUser,isPasswordMatch,isUserExisting,changeUserStatusLogin,changeUserStatusLogout,userEmailVerification, deleteUsersAcc } from  "../services/user.service.js"
 import { userPasswordHash,generateUserToken,emailTokenGenerator } from "../services/security.service.js"
 import { sendEmail,verificationEmailTemplate } from "../utills/mail.js"
 
@@ -152,5 +152,39 @@ export const userLogout = async(req,res) => {
         return res.status(200).json({ 'StatusCode': 200, 'message': 'User logout successfully' })
     } catch (error) {
         console.log("error while logout user")
+    }
+}
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+// L
+// Delete a account by user controller
+export const deleteUserAccount = async(req,res) => {
+    try {
+        const userId = req.user.user_id
+        const { user_password } = req.body
+
+        if(!userId || !user_password){
+            return res.status(404).json({ 'StatusCode':404,'error':"User id or password is not found !" })
+        }
+           const responseData = await deleteUsersAcc(userId,user_password)
+           if(!responseData?.status){
+                return res.status(400).json({ 'StatusCode':400, 'error': responseData?.error || "Error in user account deletion, please try after some time." })
+           }
+
+        // Removing a cookies from the browser
+           res.cookie("access_token","",{
+              httpOnly:true,
+              secure:true,
+              maxAge:0
+           })
+
+           res.status(200).json({ 'StatusCode':200, 'message':"Account Deletion is Completed", 'deleted_user_data':responseData?.deleted_user_details })
+        
+    } catch (error) {
+        console.log("Error from main controller in delete a user account",error)
     }
 }

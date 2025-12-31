@@ -145,3 +145,38 @@ export const userEmailVerification = async(user_email_token) => {
         console.log("Error while verifiy the email token",error)
     }
 }
+
+export const deleteUsersAcc = async(userId,user_password) => {
+    try {
+        const [user_salt] = await db.select({
+            user_salt:userTable.salt,
+            users_password:userTable.user_password,
+            user_role:userTable.user_role
+        }).from(userTable).where(eq(userTable.user_id,userId))
+
+        if(user_salt.user_role === 'ADMIN'){
+            return { 'status':false, 'error': "This danger you're ADMIN, you can-not do this !" }
+        }
+
+        if(user_salt){
+            const hashed_password = createHmac("sha256",user_salt.user_salt).update(user_password).digest("hex")
+
+            if(user_salt.users_password !== hashed_password){
+                return { 'status':false, 'error':"Password is not match,Please try again with correct password !" }
+            }
+
+        const [deletedUser] = await db.delete(userTable).where(eq(userTable.user_id,userId)).returning({
+            user_id:userTable.user_id,
+            user_name:userTable.user_name
+        })
+
+        if(deletedUser){
+            return { 'status':true, 'deleted_user_details':deletedUser }
+        }
+        return { 'status':false, 'deleted_user_details':null }
+        }
+
+    } catch (error) {
+        console.log("Error from the user service function of the user delete services",error)
+    }
+}

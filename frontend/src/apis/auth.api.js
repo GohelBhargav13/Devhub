@@ -78,3 +78,22 @@ export const UserEmailVerify = async(email_token) => {
         return { 'status':false, 'error':error?.response?.data?.error || error?.response?.data?.message }
     }
 }
+
+// User account delete
+export const DeleteAccountUser = async (user_password) => {
+    try {
+        const responseData = await apiClient.post("/user/user-account",{ user_password:user_password})
+        const actualRes = responseData?.data
+
+        if(actualRes?.StatusCode >= 400){
+            return { 'status':false, 'error': actualRes?.error, 'StatusCode':actualRes?.StatusCode }
+        }
+        if(actualRes?.StatusCode === 200){
+            return { 'status':true, 'message':actualRes?.message, 'StatusCode':actualRes?.StatusCode }
+        }
+        
+    } catch (error) {
+        console.log("Error while delete a users account from the api file",error)
+        return { 'status':false, 'error':error?.response?.data?.error || error?.response?.data?.message }
+    }
+}

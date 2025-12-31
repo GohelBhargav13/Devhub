@@ -15,6 +15,7 @@ const HomePage = () => {
   const [isShow,setIsShow] = useState(false)
   const [isLinkShow,setIsLinkShow] = useState(false)
   const [greetMessageShow,setGreetMessageShow] = useState("")
+  const [isShowDesc,setIsShowDesc] = useState("")
   const userData = useAuthStore((state) => state.userData); // Get from Zustand instead of props
 
   useEffect(() => {
@@ -101,7 +102,7 @@ const HomePage = () => {
             </div>
           ) : (
             <div className="grid grid-cols-3 gap-2 p-4 mt-10 text-white">
-              {searchPost.map((post) =>  (
+              {searchPost.map((post,i) =>  (
                 <div className="w-fit h-fit bg-linear-to-br from-slate-800 via-slate-850 to-slate-900 rounded-lg border-2 border-slate-500 hover:scale-105 hover:duration-300 hover:border-r-4 hover:border-b-4 hover:border-r-slate-200 hover:border-b-slate-200">
                   <div className="flex flex-col gap-3 p-2">
                     <div className="flex gap-5 border-b-2 border-slate-400 p-1 rounded-xl">
@@ -126,9 +127,9 @@ const HomePage = () => {
                       <p className="font-mono text-[16px] text-start">
                         {post?.post_desc?.length > 90 ? (
                             <>
-                              {isShow ? post.post_desc : post.post_desc.slice(0, 90) + "..."}
+                             { isShow ? post?.post_desc : post?.post_desc.slice(0, 70) + "..." }
                               <button
-                                onClick={handleShowDesc}
+                                onClick={() => handleShowDesc(i)}
                                 className="text-blue-500 cursor-pointer hover:text-blue-700 ml-1 font-semibold"
                               >
                                 {isShow ? "show less" : "show more"}
@@ -174,7 +175,7 @@ const HomePage = () => {
                         <div className={`grid grid-cols-3 gap-1 w-fit h-fit mt-1`}>
                         {post.post_tags && post?.post_tags?.map((tag,i) => (
                           <>
-                            <div key={i} className="mt-3">
+                            <div key={i} className="mt-1">
                               <p className={`${tagBadgesBg[i % post?.post_tags?.length]} py-1 rounded text-lg text-center`}>#{ tag }</p>
                             </div>
                           </>

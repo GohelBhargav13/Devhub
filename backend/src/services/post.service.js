@@ -30,6 +30,7 @@ export const addNewPost = async(...postDetails) => {
 export const fetchAllPosts = async() => {
     try {
         const all_available_posts = await db.select({
+            post_id:postTable.post_id,
             post_desc:postTable.post_description,
             post_links:postTable.post_links,
             post_at:postTable.created_at,

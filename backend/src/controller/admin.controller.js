@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm"
+import { asc, eq } from "drizzle-orm"
 import { db } from "../db_config/db_config_postgres.js"
 import { userTable,postTable } from "../models/index.js"
 
@@ -80,7 +80,7 @@ export const allUsersDetails = async(req,res) => {
             user_internal_name:userTable.internal_username,
             created_at:userTable.created_at,
             user_role:userTable.user_role
-        }).from(userTable)
+        }).from(userTable).orderBy(asc(userTable.created_at))
 
         if(all_user_details.length === 0){
             return res.status(400).json({ 'StatusCode':400, 'error': "No users are there" })

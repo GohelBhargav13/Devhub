@@ -155,7 +155,7 @@ export const deleteUsersAcc = async(userId,user_password) => {
         }).from(userTable).where(eq(userTable.user_id,userId))
 
         if(user_salt.user_role === 'ADMIN'){
-            return { 'status':false, 'error': "This danger you're ADMIN, you can-not do this !" }
+            return { 'status':false, 'error': "This is danger you're ADMIN, you can-not do this !" }
         }
 
         if(user_salt){

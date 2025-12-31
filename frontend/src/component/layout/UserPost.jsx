@@ -66,63 +66,90 @@ const UserPost = () => {
         </div>
       )}
       <div className="grid grid-cols-3 gap-2 p-4 mt-10 text-white">
-        {allPosts.length > 0 &&
-          allPosts.map((post) => (
-            <div
-              key={post?.post_id}
-              className="bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 h-auto rounded-2xl hover:scale-105 hover:duration-300 hover:border-r-2 hover:border-slate-500 hover:border-b-2"
-            >
-              <div className="flex gap-5 p-4 w-full h-fit">
-                <div className="p-1 rounded-lg">
-                  <UserAvatar username={post?.user_name} size={50} />
-                </div>
-                <div className="flex flex-col w-full">
-                  <p className="font-mono font-bold text-xl">
-                    {post?.user_name}
-                  </p>
-                  <p className="font-mono font-bold text-xl text-slate-300">
-                    {"@"}
-                    {post?.internal_username ?? "None"}
-                  </p>
-                </div>
-                <button
-                className={`cursor-pointer ${post?.post_id ? "visible" : "hidden"}`}
-                onClick={() => deletePostHandler(post?.post_id)}
-                > <Trash /></button>
-              </div>
-              <div className="bg-linear-to-br from-slate-700 to-slate-950 h-fit p-4 w-full rounded-xl rounded-t-3xl py-8 border-t-4 border-t-white">
-                <p className="mb-7 font-mono text-[16px]">{post?.post_desc}</p>
-                <div className="flex flex-col">
-                   <label className="font-mono text-[13px]">Provided Links:</label>
-                  { post?.post_links.length > 0 && post?.post_links.map((link,i) => (
-                    <>
-                      <a
-                        href={link} 
-                        key={i}
-                        className="text-blue-700 font-mono font-bold underline cursor-pointer p-1"
-                        target="_blank"
-                      >
-                        {link}
-                      </a>
-                    </>
-                  ))}
-                  </div>
-                 <div className="w-fit grid grid-cols-2">
-                    {post.post_tags && post?.post_tags?.map((tag,i) => (
-                      <div key={i} className="mt-3">
-                        <p className={`${tagBadgesBg[i % post?.post_tags?.length]} rounded text-lg`}>#{ tag }</p>
+         {allPosts.map((post) =>  (
+                <div className="w-fit h-fit bg-linear-to-br from-slate-800 via-slate-850 to-slate-900 rounded-lg border-2 border-slate-500 hover:scale-105 hover:duration-300 hover:border-r-4 hover:border-b-4 hover:border-r-slate-200 hover:border-b-slate-200">
+                  <div className="flex flex-col gap-3 p-2">
+                    <div className="flex gap-5 border-b-2 border-slate-400 p-1 rounded-xl">
+                      <div>
+                        <UserAvatar username={post?.user_name} size={50} />
                       </div>
-                    ))}
+                      <div className="flex flex-col">
+                        <p className="font-mono font-bold text-[17px]">
+                          {post?.user_name}
+                        </p>
+                        <p className="font-mono font-bold text-[17px]">
+                          {"@"}
+                          {post?.internal_username ?? "None"}
+                        </p>
+                      </div>
+                      <div className="flex justify-end gap-2 font-mono font-bold text-[15px] ml-auto">
+                        <Calendar />
+                        <p>{post?.post_at ? new Date(post?.post_at).toLocaleDateString() : "N/A"}</p>
+                      </div>
                     </div>
-                <p className="text-end mt-4">
-                  {"~ "}
-                  {post?.post_at
-                    ? new Date(post?.post_at).toLocaleDateString()
-                    : "N/A"}
-                </p>
-              </div>
-            </div>
-          ))}
+                    <div className="mt-1">
+                      <p className="font-mono text-[16px] text-start">
+                        {post?.post_desc?.length > 90 ? (
+                            <>
+                              {isShow ? post.post_desc : post.post_desc.slice(0, 90) + "..."}
+                              <button
+                                onClick={handleShowDesc}
+                                className="text-blue-500 cursor-pointer hover:text-blue-700 ml-1 font-semibold"
+                              >
+                                {isShow ? "show less" : "show more"}
+                              </button>
+                            </>
+                          ) : (
+                             post?.post_desc[post?.post_desc.length-1] !== '.' ? post.post_desc + "." : post.post_desc
+                          )}
+                      </p>
+                      <div className="mt-2">
+                        <label className="font-mono text-[13px] font-bold text-slate-300">
+                          You can refer this links for further information:{" "}
+                        </label>
+                        <div className="grid grid-cols-2">
+                          {post?.post_links?.map((link, i) => (
+                            <>
+                            <a
+                              href={link}
+                              key={i}
+                              className="text-blue-700 font-mono font-bold underline cursor-pointer p-1"
+                              target="_blank"
+                            >
+                              {link.length > 40 ? (
+                                <>
+                                  { isLinkShow ? link : link.slice(0, 20) + "..." }
+                                </>
+                              ) : (
+                                link
+                              )  }
+                            </a>
+                            { link.length > 40 && ( 
+                              <button type="button" className="ml-auto" onClick={handleShowLink}>
+                                    { isLinkShow ? <ChevronUp /> : <ChevronDown /> }
+                             </button>) }
+                            </>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="mt-2">
+                        <label className="font-mono text-[13px] font-bold text-slate-300">
+                          Related Tags:
+                        </label>
+                        <div className={`grid grid-cols-3 gap-1 w-fit h-fit mt-1`}>
+                        {post.post_tags && post?.post_tags?.map((tag,i) => (
+                          <>
+                            <div key={i} className="mt-3">
+                              <p className={`${tagBadgesBg[i % post?.post_tags?.length]} py-1 rounded text-lg text-center`}>#{ tag }</p>
+                            </div>
+                          </>
+                        ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
       </div>
     </>
   );

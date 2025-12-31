@@ -13,6 +13,7 @@ import AdminProtectRoute from "./services/AdminProtectRoute.jsx"
 import UserDetails from "./pages/AdminPages/UserDetails.jsx"
 import EmailVerifiy from "./pages/EmailVerifiy.jsx"
 import ActiveUserDeatils from "./pages/AdminPages/ActiveUserDeatils.jsx"
+import UserAccountDelete from "./pages/UserAccountDelete.jsx"
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
           <Route path="/email-verify/:emailToken" element={ <EmailVerifiy /> } />
           <Route path="/get-profile" element={ <ProtectRoute> <UserProfile /> </ProtectRoute> } />
           <Route path="/new-post" element={ <ProtectRoute> <NewPost /> </ProtectRoute> } />
+          <Route path="/delete-user-account" element={ <ProtectRoute> <UserAccountDelete /> </ProtectRoute> } />
           <Route path="/admin/dashboard" element={ <ProtectRoute> <AdminProtectRoute> <DashBoard /> </AdminProtectRoute> </ProtectRoute> } />
           <Route path="/admin/active-users" element={ <ProtectRoute> <AdminProtectRoute> <ActiveUserDeatils /> </AdminProtectRoute> </ProtectRoute> } />
           <Route path="/admin/user-data" element={ <ProtectRoute> <AdminProtectRoute> <UserDetails /> </AdminProtectRoute> </ProtectRoute> } />

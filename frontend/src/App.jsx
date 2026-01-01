@@ -14,6 +14,9 @@ import UserDetails from "./pages/AdminPages/UserDetails.jsx"
 import EmailVerifiy from "./pages/EmailVerifiy.jsx"
 import ActiveUserDeatils from "./pages/AdminPages/ActiveUserDeatils.jsx"
 import UserAccountDelete from "./pages/UserAccountDelete.jsx"
+import DocsPage from "./pages/DocsPages/DocsPage.jsx"
+import InfoDocs from "./pages/DocsPages/InfoDocs.jsx"
+import ApiDocs from "./pages/DocsPages/ApiDocs.jsx"
 
 
 function App() {
@@ -55,6 +58,10 @@ function App() {
           <Route path="/admin/dashboard" element={ <ProtectRoute> <AdminProtectRoute> <DashBoard /> </AdminProtectRoute> </ProtectRoute> } />
           <Route path="/admin/active-users" element={ <ProtectRoute> <AdminProtectRoute> <ActiveUserDeatils /> </AdminProtectRoute> </ProtectRoute> } />
           <Route path="/admin/user-data" element={ <ProtectRoute> <AdminProtectRoute> <UserDetails /> </AdminProtectRoute> </ProtectRoute> } />
+          <Route path="/docs" element={ <DocsPage /> }>
+              <Route path="info-docs" element={ <InfoDocs /> } />
+              <Route path="api-docs" element={ <ApiDocs /> } />
+          </Route>
         </Routes>
       </div>
     </>

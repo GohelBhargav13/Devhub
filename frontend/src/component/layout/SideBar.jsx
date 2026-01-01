@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { X,MenuSquare,Home,Contact,LogOut, Cross,LayoutDashboard,User,OctagonMinus } from "lucide-react"
+import { X,MenuSquare,Home,Contact,LogOut, Cross,LayoutDashboard,User,OctagonMinus,FileCode } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import UserAvatar from "./UserAvatar.jsx"
 import { useAuthStore } from "../../store/auth.store.js"
@@ -9,6 +9,7 @@ const platform_urls_users = [
   { 'url_name':'Home', 'path':'/', 'url_icon':<Home /> },
   { 'url_name':'Profile', 'path':'/get-profile','url_icon':<Contact /> },
   { 'url_name':'Post', 'path':'/new-post','url_icon':<Cross /> },
+  { 'url_name':'Docs', 'path':'/docs','url_icon':<FileCode /> },
 ]
 
 const platform_urls_admin = [

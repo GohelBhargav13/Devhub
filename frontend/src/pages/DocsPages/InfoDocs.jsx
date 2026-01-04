@@ -6,7 +6,7 @@ const gettingStartedSteps = [
     'title': "1. Singup - Register a new user",
     'steps':{
       't1':"Navigate to the Signup Page of the DevHub.",
-      'link':"https://devhub-self.vercel.app/signup",
+      'link':"https://devhub-self.vercel.app/register",
       'moveCode':"Go to Signup",
       't2':"Fill in the required information such as username, email, and password."
     },

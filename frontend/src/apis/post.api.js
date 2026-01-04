@@ -140,3 +140,22 @@ export const deleteUserFunc = async(user_id) => {
         return { 'status':false, 'error':error?.response?.data?.error || error?.response?.data?.message }
     }
 }
+
+// fetch all posts for api docs
+export const fetchDocsApis = async(endpoint) => {
+    try {
+        const responseData = await apiClient.get(endpoint)
+        const actualRes = responseData?.data
+
+        if(actualRes?.StatusCode >= 400){
+            return { 'status':false, 'data':null, 'error': actualRes?.error }
+        }
+        if(actualRes?.StatusCode === 200){
+            return { 'status':true, 'data': actualRes?.data?.all_posts || null, 'message': actualRes?.message }
+        }
+        
+    } catch (error) {
+        console.log("Error while fetching a all posts for api docs",error)
+        return { 'status':false, 'data':null, 'error': error?.response?.data?.error || error?.response?.data?.message  }
+    }
+}

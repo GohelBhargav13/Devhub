@@ -62,6 +62,7 @@ function App() {
               <Route path="info-docs" element={ <InfoDocs /> } />
               <Route path="api-docs" element={ <ApiDocs /> } />
           </Route>
+          <Route path="*" element={ <div>404 Not Found</div> } />
         </Routes>
       </div>
     </>

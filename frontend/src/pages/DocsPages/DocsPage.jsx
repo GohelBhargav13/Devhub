@@ -47,7 +47,7 @@ const DocsPage = () => {
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
           }`}
         >
-          API Docs
+          Developer Docs
         </Link>
       </nav>
 

@@ -93,3 +93,16 @@ export const deletePostOfUser = async(req,res) => {
         console.log("Error while deleting a post in main controller",error)
     }
 }
+
+// All posts of the platform for the api-docs purpose
+export const allPostsForApiDocs = async(req,res) => {
+    try {
+        const { status,all_posts } = await fetchAllPosts()
+          if(!status){
+            return res.status(400).json({ 'StatusCode':400, 'message':"No Posts are there" })
+        }
+        res.status(200).json({ 'StatusCode':200, data: { all_posts }, 'message': "Posts are fetched" })
+    } catch (error) {
+        console.log("Error while fetching all posts for api-docs",error)
+    }
+}

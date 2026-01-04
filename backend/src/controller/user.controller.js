@@ -188,3 +188,12 @@ export const deleteUserAccount = async(req,res) => {
         console.log("Error from main controller in delete a user account",error)
     }
 }
+
+// user logout for api-docs
+export const userLogoutForApiDocs = async(req,res) => {
+    try {
+        res.status(200).json({ 'StatusCode': 200, 'message': 'User logout successfully' })
+    } catch (error) {
+        console.log("Error while logout user for api docs",error)
+    }
+}

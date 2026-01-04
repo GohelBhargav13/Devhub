@@ -1,15 +1,14 @@
 import express from "express"
 import { ensureUserAuthenticate,checkTokenExists } from "../middleware/auth.middleware.js"
-import { allPosts, deletePostOfUser, getOnlyUserPosts, newPostCreation } from "../controller/post.controller.js"
+import { allPosts, allPostsForApiDocs, deletePostOfUser, getOnlyUserPosts, newPostCreation } from "../controller/post.controller.js"
 const postRouter = express.Router()
 
-postRouter.use(checkTokenExists)
-postRouter.use(ensureUserAuthenticate)
 
-postRouter.post("/create-post",newPostCreation)
-postRouter.get("/all-posts",allPosts)
-postRouter.get("/login-user-posts",getOnlyUserPosts)
-postRouter.delete("/delete-post/:postId",deletePostOfUser)
+postRouter.post("/create-post",checkTokenExists,ensureUserAuthenticate,newPostCreation)
+postRouter.get("/all-posts",checkTokenExists,ensureUserAuthenticate,allPosts)
+postRouter.get("/login-user-posts",checkTokenExists,ensureUserAuthenticate,getOnlyUserPosts)
+postRouter.delete("/delete-post/:postId",checkTokenExists,ensureUserAuthenticate,deletePostOfUser)
+postRouter.get("/all-posts-api-docs",allPostsForApiDocs)
 
 
 export default postRouter

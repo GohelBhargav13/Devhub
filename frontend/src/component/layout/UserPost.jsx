@@ -86,6 +86,9 @@ const UserPost = () => {
                         <Calendar />
                         <p>{post?.post_at ? new Date(post?.post_at).toLocaleDateString() : "N/A"}</p>
                       </div>
+                      <div>
+                        <button className="cursor-pointer" onClick={() => deletePostHandler(post?.post_id)}><Trash /></button>
+                      </div>
                     </div>
                     <div className="mt-1">
                       <p className="font-mono text-[16px] text-start">

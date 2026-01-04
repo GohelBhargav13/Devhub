@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { loginUserPosts } from "../../apis/post.api.js"
 import toast from "react-hot-toast";
 import UserAvatar from "./UserAvatar.jsx";
-import { Loader2, Trash } from "lucide-react"
+import { Calendar, ChevronDown, ChevronUp, Loader2, Trash } from "lucide-react"
 import { deletePost } from "../../apis/post.api.js"
 import { tagBadgesBg } from "../../services/tagBadge.js"
 

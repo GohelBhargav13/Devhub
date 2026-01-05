@@ -9,6 +9,8 @@ import { tagBadgesBg } from "../../services/tagBadge.js"
 const UserPost = () => {
   const [allPosts, setAllPosts] = useState([]);
   const [isLoading,setIsLoading] = useState(false)
+  const [isShowDesc,setIsShowDesc] = useState(null)
+  const [isShowLink,setIsShowLink] = useState(null)
 
   useEffect(() => {
     const fetchPosts = async() => {
@@ -48,6 +50,15 @@ const UserPost = () => {
     }finally{
       console.log("post delete function is trigger")
     }
+  }
+
+  // handle a show more/less for post links
+  const handleShowLink = (post_id) => {
+    setIsShowLink(prev => prev === post_id ? null : post_id)
+  }
+
+  const handleShowDesc = (post_id) => {
+    setIsShowDesc(prev => prev === post_id ? null : post_id)
   }
 
   if(isLoading){
@@ -90,16 +101,16 @@ const UserPost = () => {
                         <button className="cursor-pointer" onClick={() => deletePostHandler(post?.post_id)}><Trash /></button>
                       </div>
                     </div>
-                    <div className="mt-1">
+                   <div className="mt-1">
                       <p className="font-mono text-[16px] text-start">
                         {post?.post_desc?.length > 90 ? (
                             <>
-                              {isShow ? post.post_desc : post.post_desc.slice(0, 90) + "..."}
+                             { isShowDesc === post.post_id ? post.post_desc : post.post_desc.slice(0,70) + "..." }
                               <button
-                                onClick={handleShowDesc}
+                                onClick={() => handleShowDesc(post.post_id)}
                                 className="text-blue-500 cursor-pointer hover:text-blue-700 ml-1 font-semibold"
                               >
-                                {isShow ? "show less" : "show more"}
+                                { isShowDesc === post.post_id ? "show less" : "show more"}
                               </button>
                             </>
                           ) : (
@@ -121,15 +132,15 @@ const UserPost = () => {
                             >
                               {link.length > 40 ? (
                                 <>
-                                  { isLinkShow ? link : link.slice(0, 20) + "..." }
+                                  { isShowLink === post.post_id ? link : link.slice(0, 20) + "..." }
                                 </>
                               ) : (
                                 link
                               )  }
                             </a>
                             { link.length > 40 && ( 
-                              <button type="button" className="ml-auto" onClick={handleShowLink}>
-                                    { isLinkShow ? <ChevronUp /> : <ChevronDown /> }
+                              <button type="button" className="ml-auto" onClick={() => handleShowLink(post.post_id)}>
+                                    { isShowLink === post.post_id ? <ChevronUp /> : <ChevronDown /> }
                              </button>) }
                             </>
                           ))}
@@ -142,7 +153,7 @@ const UserPost = () => {
                         <div className={`grid grid-cols-3 gap-1 w-fit h-fit mt-1`}>
                         {post.post_tags && post?.post_tags?.map((tag,i) => (
                           <>
-                            <div key={i} className="mt-3">
+                            <div key={i} className="mt-1">
                               <p className={`${tagBadgesBg[i % post?.post_tags?.length]} py-1 rounded text-lg text-center`}>#{ tag }</p>
                             </div>
                           </>

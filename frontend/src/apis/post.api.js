@@ -160,3 +160,58 @@ export const fetchDocsApis = async(endpoint) => {
         return { 'status':false, 'data':null, 'error': error?.response?.data?.error || error?.response?.data?.message  }
     }
 }
+
+// Save a post by user
+export const savePostByUser = async(post_id) => {
+    try {
+        const responseData = await apiClient.post(`/post/add-save-post/${post_id}`)
+        const actualRes = responseData?.data
+
+        if(actualRes?.StatusCode >= 400){
+            return { 'status':false, 'data':null, 'error': actualRes?.error }
+        }
+        if(actualRes?.StatusCode === 200){
+            return { 'status':true, 'data': actualRes?.data, 'message': actualRes?.message }
+        }
+        
+    } catch (error) {
+        return { 'status':false, 'data':null, 'error': error?.response?.data?.error || error?.response?.data?.message  }
+    }
+}
+
+// Unsave a post by user
+export const unsavePostByUser = async(post_id) => {
+    try {
+        const responseData = await apiClient.delete(`/post/remove-save-post/${post_id}`)
+        const actualRes = responseData?.data
+
+        if(actualRes?.StatusCode >= 400){
+            return { 'status':false, 'data':null, 'error': actualRes?.error }
+        }
+        if(actualRes?.StatusCode === 200){
+            return { 'status':true, 'data': actualRes?.data, 'message': actualRes?.message }
+        }
+        
+    } catch (error) {
+        return { 'status':false, 'data':null, 'error': error?.response?.data?.error || error?.response?.data?.message  }
+    }
+}
+
+// fetch a user saved posts
+export const fetchUserSavedPosts = async() => {
+    try {
+        const responseData = await apiClient.get("/post/all-saved-posts")
+        const actualRes = responseData?.data
+
+        if(actualRes?.StatusCode >= 400){
+            return { 'status':false, 'data':null, 'error':actualRes?.error || "Error while fetch a user posts" }
+        }
+
+        if(actualRes?.StatusCode === 200){
+            return { 'status':true, 'data':actualRes?.data, 'message':actualRes?.message || "user posts fetched..." }
+        }
+        
+    } catch (error) {
+        return { 'status':false, 'data':null, 'error': error?.response?.data?.error || error?.response?.data?.message  }
+    }
+}

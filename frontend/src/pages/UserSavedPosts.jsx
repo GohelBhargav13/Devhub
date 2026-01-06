@@ -1,56 +1,52 @@
-import { useEffect, useState } from "react";
-import SideBar from "../component/layout/SideBar.jsx";
-import UserAvatar from "../component/layout/UserAvatar.jsx";
-import { fetchAllPosts, savePostByUser, unsavePostByUser } from "../apis/post.api.js";
-import toast from "react-hot-toast";
-import { useAuthStore } from "../store/auth.store.js";
-import { tagBadgesBg } from "../services/tagBadge.js";
-import { Loader2, Calendar, ChevronUp, ChevronDown,BookmarkPlus, BookmarkMinus } from "lucide-react";
-import { userGreetMessage,postDescCountTime } from "../apis/greet.api.js"
+import { useEffect,useState } from 'react'
+import SideBar from '../component/layout/SideBar'
+import { useAuthStore } from "../store/auth.store.js"
+import { fetchUserSavedPosts, unsavePostByUser } from "../apis/post.api.js"
+import toast from 'react-hot-toast'
+import { tagBadgesBg } from '../services/tagBadge.js'
+import { BookmarkMinus, Calendar, ChevronDown, ChevronUp, Loader2 } from 'lucide-react'
+import UserAvatar from '../component/layout/UserAvatar'
+import { postDescCountTime,userGreetMessage } from '../apis/greet.api.js'
 
-const HomePage = () => {
-  const [allPosts, setAllPosts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [searchWord, setSearchWord] = useState("");
-  const [greetMessageShow,setGreetMessageShow] = useState("")
-  const [isShowDesc,setIsShowDesc] = useState(null)
-  const [isShowLink,setIsShowLink] = useState(null)
-  const userData = useAuthStore((state) => state.userData); // Get from Zustand instead of props
+const UserSavedPosts = () => {
+    const [allSavedPosts,setAllSavedPosts] = useState([])
+    const [isShowDesc,setIsShowDesc] = useState(null)
+    const [searchWord, setSearchWord] = useState("");
+    const [isShowLink,setIsShowLink] = useState(null)
+    const [isLoading, setIsLoading] = useState(false);
+    const userData = useAuthStore(state => state.userData)
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        setIsLoading(true);
-        const responseData = await fetchAllPosts();
-        console.log(responseData);
-        if (!responseData?.status) {
-          toast.error(responseData?.error || "Failed to fetch posts");
-          return;
+    useEffect(() => {
+        const fetchSavedPosts = async() => {
+            try {
+                setIsLoading(true)
+                const responseData = await fetchUserSavedPosts()
+                if(!responseData?.status){
+                    toast.error(responseData?.error || "Error in fetch posts")
+                    return
+                }
+                setAllSavedPosts(responseData?.data)
+                toast.success(responseData?.message || "user posts fecthed...")
+            } catch (error) {
+                setIsLoading(false)
+                console.log("Error while fetching a posts",error)
+            }finally {
+                setIsLoading(false)
+            }
         }
 
-        toast.success(responseData?.message);
-        setAllPosts(responseData?.all_posts || []);
-      } catch (error) {
-        console.log("Error fetching posts:", error);
-        toast.error("Error fetching posts");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+        fetchSavedPosts()
+    },[])
 
-    setGreetMessageShow(userGreetMessage(userData?.user_name.split(" ")[0].toUpperCase()));
-    fetchPosts();
-  }, []);
-
-  // post search functionality
-  const searchPost = allPosts.filter(
+     // post search functionality
+  const searchPost = allSavedPosts.filter(
     (post) =>
       post.post_desc.toLowerCase().includes(searchWord.toLowerCase()) ||
       post.post_tags.filter((tag) =>
         tag.toLowerCase().includes(searchWord.toLowerCase())
       ).length > 0
   );
-
+    
   // Handle a show more/less for post description
   const handleShowDesc = (post_id) => {
     setIsShowDesc(prev => prev === post_id ? null : post_id)
@@ -61,23 +57,7 @@ const HomePage = () => {
     setIsShowLink(prev => prev === post_id ? null : post_id)
   }
 
-  // Handle a save post by user
-  const handleSavePost = async(post_id) => {
-    try {
-      const responseData = await savePostByUser(post_id)
-      console.log(responseData)
-      if(!responseData?.status){
-        toast.error(responseData?.error)
-        return
-      }
-      toast.success(responseData?.message)
-      setIsSaved(prev => [...prev,post_id])
-    } catch (error) {
-      toast.error(error?.response?.data?.error || error?.response?.data?.message)
-    }
-  }
-
-  // Handle a unsave post by user
+    // Handle a unsave post by user
   const handleUnsavePost = async(post_id) => {
     try {
       const responseData = await unsavePostByUser(post_id)
@@ -86,14 +66,10 @@ const HomePage = () => {
         return
       }
       toast.success(responseData?.message)
-      setIsSaved(prev => prev.filter(p_id => p_id !== post_id))
+      setAllSavedPosts(prev => prev.filter(post => post?.post_id !== post_id))
     } catch (error) {
       toast.error(error?.response?.data?.error || error?.response?.data?.message)
     }
-  }
-
-  if (!userData) {
-    return <div>Loading...</div>;
   }
 
   return (
@@ -102,10 +78,10 @@ const HomePage = () => {
         <div>
           <SideBar userData={userData} />
         </div>
-        <div className="flex flex-col gap-3 w-full h-screen min-h-screen">
+         <div className="flex flex-col gap-3 w-full h-screen min-h-screen">
           <div className="text-3xl font-mono font-bold my-11 text-right mr-10">
             <p className="border-b-2 border-r-2 border-white rounded-4xl p-2 hover:border-b-4 hover:border-white px-5">
-               { greetMessageShow }
+               { userGreetMessage(userData?.user_name.split(" ")[0].toUpperCase()) }
             </p>
           </div>
 
@@ -127,13 +103,13 @@ const HomePage = () => {
                 </p>
               </div>
             </>
-          ) : allPosts.length === 0 || searchPost.length === 0 ? (
+          ) : allSavedPosts.length === 0 || searchPost.length === 0 ? (
             <div className="flex justify-center items-center h-96">
               <p className="text-white text-xl">No posts available</p>
             </div>
           ) : (
             <div className="grid grid-cols-3 gap-2 p-4 mt-10 text-white">
-              {searchPost.map((post,i) =>  (
+              {allSavedPosts.map((post,i) =>  (
                 <div className="w-fit h-fit bg-linear-to-br from-slate-800 via-slate-850 to-slate-900 rounded-lg border-2 border-slate-500 hover:scale-105 hover:duration-300 hover:border-r-4 hover:border-b-4 hover:border-r-slate-200 hover:border-b-slate-200" key={post?.post_id}>
                   <div className="flex flex-col gap-3 p-2">
                     <div className="flex gap-5 border-b-2 border-slate-400 p-1 rounded-xl">
@@ -146,16 +122,16 @@ const HomePage = () => {
                         </p>
                         <p className="font-mono font-bold text-[17px]">
                           {"@"}
-                          {post?.internal_username ?? "None"}
+                          {post?.user_internal_name ?? "None"}
                         </p>
                       </div>
                       <div className="flex flex-col gap-3 text-end w-full">
                         <div className="flex justify-end gap-2 font-mono font-bold text-[15px] ml-auto">
                           <Calendar />
-                          <p>{post?.post_at ? new Date(post?.post_at).toLocaleDateString() : "N/A"}</p>
+                          <p>{post?.created_at ? new Date(post?.created_at).toLocaleDateString() : "N/A"}</p>
                         </div>
                        <div className="font-mono text-[13px] w-full justify-end flex text-slate-300 font-bold mr-1 gap-2">
-                          <button className="cursor-pointer" onClick={() => handleSavePost(post?.post_id)}><BookmarkPlus /></button>
+                              <button className="cursor-pointer" onClick={() => handleUnsavePost(post?.post_id)}><BookmarkMinus /></button>
                            <p>{postDescCountTime(post?.post_desc)}</p>
                        </div>
                       </div>
@@ -228,7 +204,7 @@ const HomePage = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default UserSavedPosts

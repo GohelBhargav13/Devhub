@@ -18,6 +18,7 @@ import DocsPage from "./pages/DocsPages/DocsPage.jsx"
 import InfoDocs from "./pages/DocsPages/InfoDocs.jsx"
 import ApiDocs from "./pages/DocsPages/ApiDocs.jsx"
 import ForgotPass from "./pages/ForgotPass.jsx"
+import FourOFour from "./pages/FourOFour.jsx"
 
 
 function App() {
@@ -64,7 +65,7 @@ function App() {
               <Route path="info-docs" element={ <InfoDocs /> } />
               <Route path="api-docs" element={ <ApiDocs /> } />
           </Route>
-          <Route path="*" element={ <div>404 Not Found</div> } />
+          <Route path="*" element={ <FourOFour />} />
         </Routes>
       </div>
     </>

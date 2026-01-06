@@ -17,6 +17,7 @@ import UserAccountDelete from "./pages/UserAccountDelete.jsx"
 import DocsPage from "./pages/DocsPages/DocsPage.jsx"
 import InfoDocs from "./pages/DocsPages/InfoDocs.jsx"
 import ApiDocs from "./pages/DocsPages/ApiDocs.jsx"
+import ForgotPass from "./pages/ForgotPass.jsx"
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
           <Route path="/login" element={ <LoginPage /> } />
           <Route path="/register" element={ <RegisterPage /> } />
           <Route path="/email-verify/:emailToken" element={ <EmailVerifiy /> } />
+          <Route path="/forgot-password" element={ <ForgotPass /> } />
           <Route path="/get-profile" element={ <ProtectRoute> <UserProfile /> </ProtectRoute> } />
           <Route path="/new-post" element={ <ProtectRoute> <NewPost /> </ProtectRoute> } />
           <Route path="/delete-user-account" element={ <ProtectRoute> <UserAccountDelete /> </ProtectRoute> } />

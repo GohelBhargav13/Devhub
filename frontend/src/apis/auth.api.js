@@ -97,3 +97,26 @@ export const DeleteAccountUser = async (user_password) => {
         return { 'status':false, 'error':error?.response?.data?.error || error?.response?.data?.message }
     }
 }
+
+// User password update 
+export const UpdateUserPassword = async({ user_email,user_password }) => {
+    try {
+
+        const responseData = await apiClient.post("/user/forgot-password",{
+            user_email,
+            user_password
+        })
+        const actualRes = responseData?.data
+
+        if(actualRes?.StatusCode >= 400){
+            return { 'status':false, 'error':actualRes?.error }
+        }
+        if(actualRes?.StatusCode === 200){
+            return { 'status':true, 'message': actualRes?.message || "User Password is updated" }
+        }
+        
+    } catch (error) {
+        console.log("Error while updating a users password from the api file",error)
+        return { 'status':false, 'error':error?.response?.data?.error || error?.response?.data?.message }
+    }
+}

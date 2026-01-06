@@ -1,4 +1,4 @@
-import { postTable,userTable } from "../models/index.js"
+import { postTable,savepostusers,userTable } from "../models/index.js"
 import { db } from "../db_config/db_config_postgres.js"
 import { and, desc, eq } from "drizzle-orm"
 
@@ -87,5 +87,110 @@ export const deleteAUserPost = async(post_id,user_id) => {
         return { 'status':false, 'deleted_postId':null }
     } catch (error) {
         console.log("Error while deleting a user post in the service function",error)
+    }
+}
+
+// Add a new record in the savepostuser table
+export const createNewUserPostSave = async(post_id,user_id) => {
+    try {
+
+        const [ post ] = await db.select({
+            post_id:postTable.post_id
+        }).from(postTable).where(eq(postTable.post_id,post_id))
+
+       const [response] = await db.select({
+            record_id:savepostusers.id
+        }).from(savepostusers).where(and(eq(savepostusers.user_id,user_id),eq(savepostusers.post_id,post_id)))
+
+        if(response?.record_id){
+            return { 'status':false, 'error':'Post is already saved' }
+        }
+
+        if(!post){
+            return { 'status':false, 'error':"Post is not found" }
+        }
+
+        const [newRecord] = await db.insert(savepostusers).values({
+            post_id:post_id,
+            user_id:user_id
+        }).returning({
+            new_id:savepostusers.id
+        })
+
+        if(!newRecord){
+            return { 'status':false, 'new_record_id':null}
+        }
+
+        return { 'status':true, 'new_record_id':newRecord.new_id }
+        
+    } catch (error) {
+        console.log("Error while insert a record into the database of the saveuserpost in services",error)
+    }
+}
+
+// Delete a record from the savepostuser table
+export const deleteRecordUserPostSave = async (post_id,user_id) => {
+  try {
+    const [post] = await db
+      .select({
+        post_id: postTable.post_id,
+      })
+      .from(postTable)
+      .where(eq(postTable.post_id, post_id));
+
+    if (!post) {
+      return { status: false, error: "Post is not found" };
+    }
+
+    const [deleted] = await db
+      .delete(savepostusers)
+      .where(
+        and(
+          eq(savepostusers.post_id, post_id),
+          eq(savepostusers.user_id, user_id),
+        ),
+      )
+      .returning({ record_id: savepostusers.id });
+
+    if (!deleted) {
+      return {
+        status: false,
+        error: "Save post record not found for this user",
+        del_record_id: null,
+      };
+    }
+
+    return {
+      status: true,
+      message: "Post removed from your saved posts",
+      del_record_id: deleted.record_id,
+    };
+  } catch (error) {
+    console.log("Error while remove a save post from services", error);
+    return { status: false, error: "Internal server error" };
+  }
+};
+
+// fetch login users all save posts
+export const userAllSavedPostsService = async (user_id) => {
+    try {
+        const usersSavePost = await db.select({
+            id:savepostusers.id,
+            user_name:userTable.user_name,
+            user_internal_name:userTable.internal_username,
+            post_desc:postTable.post_description,
+            post_id:postTable.post_id,
+            created_at:postTable.created_at,
+            post_links:postTable.post_links,
+            post_tags:postTable.post_tags
+        }).from(savepostusers).innerJoin(postTable,eq(postTable.post_id,savepostusers.post_id)).innerJoin(userTable,eq(userTable.user_id,postTable.user_id)).where(eq(savepostusers.user_id,user_id))
+
+        if(usersSavePost.length === 0){
+            return { 'status':false, 'error': "No saved post by user" }
+        }
+
+        return { 'status':true, 'user_posts':usersSavePost, 'message':"user posts fetched" }
+    } catch (error) {
+        console.log("Error while fetch users save post from services",error)
     }
 }

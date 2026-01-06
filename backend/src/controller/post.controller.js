@@ -1,4 +1,4 @@
-import { addNewPost } from "../services/post.service.js"
+import { addNewPost, createNewUserPostSave, deleteRecordUserPostSave,userAllSavedPostsService } from "../services/post.service.js"
 import { fetchAllPosts,loginUserPosts,deleteAUserPost } from "../services/post.service.js"
 /**
  * 
@@ -104,5 +104,83 @@ export const allPostsForApiDocs = async(req,res) => {
         res.status(200).json({ 'StatusCode':200, data: { all_posts }, 'message': "Posts are fetched" })
     } catch (error) {
         console.log("Error while fetching all posts for api-docs",error)
+    }
+}
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+// save user post controller
+export const saveUserPost = async(req,res) => {
+    try {
+        const { post_id } = req.params
+        const user_id = req.user.user_id
+
+        if(!user_id || !post_id){
+            return res.status(400).json({ 'StatusCode':400, 'error': "All fields are required" })
+        }
+
+       const responseData = await createNewUserPostSave(post_id,user_id)
+       if(!responseData?.status){
+            return res.status(400).json({ 'StatusCode':400, 'error':responseData?.error || "Error in insert a post in save posts" })
+       }
+
+       res.status(200).json({ 'StatusCode':200, 'message': "post added into the save posts", 'data':responseData?.new_record_id })
+
+    } catch (error) {
+        console.log("Error while save a user post from the main controller",error)
+    }
+}
+
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+export const deleteSavePost = async(req,res) => {
+    try {
+        const { post_id } = req.params
+        const user_id = req.user.user_id
+    
+        if(!post_id || !user_id){
+            return res.status(400).json({ 'StatusCode':400, 'error': "All fields are required" })
+        }
+
+        const responseData = await deleteRecordUserPostSave(post_id,user_id)
+        if(!responseData?.status){
+            return res.status(400).json({ 'StatusCode':400, 'error': responseData?.error || "Erorr when remove a post from the save posts" })
+        }
+
+        res.status(200).json({ 'StatusCode':200, 'message':responseData?.message || "post remove successfully", 'data':responseData?.del_record_id })
+        
+    } catch (error) {
+        console.log("Error while remove a post from the save posts",error)
+    }
+}
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+// fetch users all saved post 
+export const userAllSavedPosts = async(req,res) => {
+    try {
+        const user_id = req?.user?.user_id
+        if(!user_id){
+            return res.status(400).json({ 'StatusCode':400, 'error':"user is not login" })
+        }
+        const responseData = await userAllSavedPostsService(user_id)
+        if(!responseData?.status){
+            return res.status(400).json({ 'StatusCode':400, 'error': responseData?.error || "No post saved by user" })
+        }
+
+        res.status(200).json({ 'StatusCode':200, 'message':responseData?.message || "User's saved posts fetched...", 'data':responseData?.user_posts })
+
+    } catch (error) {
+        console.log("Error while fetching a user save post from controller",error)
     }
 }

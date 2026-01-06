@@ -180,3 +180,24 @@ export const deleteUsersAcc = async(userId,user_password) => {
         console.log("Error from the user service function of the user delete services",error)
     }
 }
+
+// User-password update services
+export const userPasswordUpdate = async(...userData) => {
+    try {
+        const [user_email,updated_password,updated_salt] = userData
+
+       const [ user ] =  await db.update(userTable).set({ user_password:updated_password,salt:updated_salt }).where
+        (eq(userTable.user_email,user_email)).returning({
+            user_id:userTable.user_id
+        })
+
+        if(!user){
+            return { 'status':false,'user_id':null }
+        }
+
+        return { 'status':true, 'user_id':user.user_id }
+        
+    } catch (error) {
+        console.log("Error while updating a password of the user from the services",error)
+    }
+}

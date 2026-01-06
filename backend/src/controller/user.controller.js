@@ -1,5 +1,5 @@
-import { createNewUser,isPasswordMatch,isUserExisting,changeUserStatusLogin,changeUserStatusLogout,userEmailVerification, deleteUsersAcc } from  "../services/user.service.js"
-import { userPasswordHash,generateUserToken,emailTokenGenerator } from "../services/security.service.js"
+import { createNewUser,isPasswordMatch,isUserExisting,changeUserStatusLogin,changeUserStatusLogout,userEmailVerification, deleteUsersAcc, userPasswordUpdate } from  "../services/user.service.js"
+import { userPasswordHash,generateUserToken,emailTokenGenerator,userPasswordCheck } from "../services/security.service.js"
 import { sendEmail,verificationEmailTemplate } from "../utills/mail.js"
 
 // Register controller
@@ -160,7 +160,6 @@ export const userLogout = async(req,res) => {
  * @param {import('express').Request} req 
  * @param {import('express').Response} res 
  */
-// L
 // Delete a account by user controller
 export const deleteUserAccount = async(req,res) => {
     try {
@@ -195,5 +194,43 @@ export const userLogoutForApiDocs = async(req,res) => {
         res.status(200).json({ 'StatusCode': 200, 'message': 'User logout successfully' })
     } catch (error) {
         console.log("Error while logout user for api docs",error)
+    }
+}
+
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+// forgot password controller
+export const userforgotPassword = async(req,res) => {
+    try {
+        const { user_email, user_password } = req.body
+
+        if(!user_email || !user_password){
+            return res.status(400).json({ 'StatusCode':400, 'error': "All fields are required" })
+        }
+        
+         // User is existing or not
+         const responseData = await isUserExisting(user_email)
+         if(!responseData.status){
+            return res.status(400).json({'StatusCode':400, 'error': `${user_email} is not exists` })
+         }
+          const { salt, hashed_password } = await userPasswordHash(user_password)
+          const users_hashedPassword = await userPasswordCheck(user_password,responseData?.existing_user?.salt)
+          
+          if(responseData?.existing_user?.user_password === users_hashedPassword){
+            return res.status(400).json({ 'StatusCode':400, 'error':"You cannot set you're previous password !" })
+          }
+          
+          const response = await userPasswordUpdate(user_email,hashed_password,salt)
+          if(!response.status){
+                return res.status(400).json({ 'StatusCode':400, 'error':"User password not update something is wrong" })
+          }
+
+          res.status(200).json({ 'StatusCode':200, 'data':response.user_id })
+    } catch (error) {
+        return res.status(500).json({ 'StatusCode':500, 'error':`${error}` })
+        console.log("Error while updating a password of the user from the controller",error)
     }
 }

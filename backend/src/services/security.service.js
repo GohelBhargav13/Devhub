@@ -39,3 +39,12 @@ export const emailTokenGenerator = async() => {
         console.log("Error while creating a email verification token",error)
     }
 }
+
+// check users existing password and enterd password is match or not
+export const userPasswordCheck = async(user_password,existing_salt) => {
+    try {
+        return createHmac("sha256",existing_salt).update(user_password).digest("hex")
+    } catch (error) {
+         console.log("Error while updating a password of the user from the services for existing",error)
+    }
+}

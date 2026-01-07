@@ -152,7 +152,7 @@ export const fetchDocsApis = async(endpoint) => {
             return { 'status':false, 'data':null, 'error': actualRes?.error }
         }
         if(actualRes?.StatusCode === 200){
-            return { 'status':true, 'data': actualRes?.data?.all_posts || actualRes?.data?.u_posts || null, 'message': actualRes?.message }
+            return { 'status':true, 'data': actualRes?.data?.all_posts || actualRes?.data?.u_posts || actualRes?.data || null, 'message': actualRes?.message }
         }
         
     } catch (error) {

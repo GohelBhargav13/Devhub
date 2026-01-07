@@ -19,6 +19,7 @@ const allPostApiRoutes = [
     {  'method': 'GET','mpath': '/post/all-posts-api-docs', 'description': 'Get All Posts.' },
     {  'method': 'GET','mpath': '/post/login-user-posts', 'description': 'Get Login User Posts.' },
     {  'method': 'DEL','mpath': '/post/delete-post/:postId', 'description': 'Delete a Post.' },
+    {  'method': 'GET','mpath': '/post/all-saved-posts', 'description': 'Get All Saved Posts.' },
 ]
 
 const ApiDocs = () => {

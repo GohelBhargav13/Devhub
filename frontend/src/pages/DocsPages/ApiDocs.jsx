@@ -113,7 +113,7 @@ const ApiDocs = () => {
                                     </div>
                                     { currentApiRoute === routes.mpath && (
                                         <div>
-                                            <p className='text-red-500/90 font-bold text-center mt-2'>for POST method it is not implemented...</p>
+                                            <p className='text-red-500/90 font-bold text-center mt-2'>Feature coming soon...</p>
                                         </div>
                                     )}
                                     </div>
@@ -130,7 +130,7 @@ const ApiDocs = () => {
                                     </div>
                                      { currentApiRoute === routes.mpath && (
                                         <div>
-                                            <p className='text-red-500/90 font-bold text-center mt-2'>for DELETE method it is not implemented...</p>
+                                            <p className='text-red-500/90 font-bold text-center mt-2'>Feature coming soon...</p>
                                         </div>
                                     )}
                                     </div>
@@ -196,7 +196,7 @@ const ApiDocs = () => {
                                     </div>
                                     { currentApiRoute === routes.mpath && (
                                         <div>
-                                            <p className='text-red-500/90 font-bold text-center mt-2'>for POST method it is not implemented...</p>
+                                            <p className='text-red-500/90 font-bold text-center mt-2'>Feature coming soon...</p>
                                         </div>
                                     )}
                                     </div>
@@ -213,7 +213,7 @@ const ApiDocs = () => {
                                     </div>
                                     { currentApiRoute === routes.mpath && (
                                         <div>
-                                            <p className='text-red-500/90 font-bold text-center mt-2'>for DELETE method it is not implemented...</p>
+                                            <p className='text-red-500/90 font-bold text-center mt-2'>Feature coming soon...</p>
                                         </div>
                                     )}
                                     </div>

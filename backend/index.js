@@ -4,6 +4,7 @@ import cors from "cors"
 import { createServer } from "http"
 import { Server } from "socket.io"
 import { isUserExisting } from "./src/services/user.service.js"
+import { questionsIsExists } from "./src/services/queans.service.js"
 import "dotenv/config"
 
 const app = express()
@@ -36,10 +37,12 @@ app.get("/", (req, res) => {
 import userRoutes from "./src/routes/user.routes.js"
 import postRoutes from "./src/routes/post.routes.js"
 import adminRoutes from "./src/routes/admin.routes.js"
+import questionRoutes from "./src/routes/question.routes.js"
 
 app.use("/api/v1/user", userRoutes)
 app.use("/api/v1/post", postRoutes)
 app.use("/api/v1/admin", adminRoutes)
+app.use("/api/v1/quesans",questionRoutes)
 
 // Socket connections
 io.on("connection", (socket) => {
@@ -74,13 +77,26 @@ io.on("connection", (socket) => {
     socket.on("newActiveUser", async({ user_email,total_active,message }) => {
         try {
            const responseData = await isUserExisting(user_email)
-           console.log(responseData)
            if(responseData?.status){
                  io.emit("ActiveUsers", { user_email, total_active, message })
            }
             
         } catch (error) {
             socket.emit("userError",{ message: "An error occurred on the active user socket" })
+        }
+    })
+
+    // New-comment
+    socket.on("newComment", async({ que_id,comment_details }) => {
+        try {
+           const response = await questionsIsExists(que_id)
+           if(response?.status){
+              io.emit("newUserComment",{que_id, 'message':"comment successfully", comment_details })
+              return
+           }
+            
+        } catch (error) {
+            socket.emit("userError",{ message: "An error occurred on the commenting a question" })
         }
     })
 

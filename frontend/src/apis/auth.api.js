@@ -120,3 +120,32 @@ export const UpdateUserPassword = async({ user_email,user_password }) => {
         return { 'status':false, 'error':error?.response?.data?.error || error?.response?.data?.message }
     }
 }
+
+// handle a api-docs request
+export const handlePostRequest = async(endpoint,data) => {
+   try {
+        if(!data) return
+        
+        const userInfo = JSON.parse(localStorage.getItem("userInfo"))
+        const isLogin = JSON.parse(localStorage.getItem("isLogin"))
+
+        if(userInfo && isLogin){
+            if(userInfo?.user_email === data?.user_email){
+                return { 'StatusCode':200, 'status':true, 'message':"user is already loggedIn, Explore a platform...!" }
+            }
+        }
+        const responseData = await apiClient.post(endpoint,data)
+        const actualRes = responseData?.data
+
+        if(actualRes?.StatusCode >= 400){
+            return { 'status':false, 'error': actualRes?.error, 'StatusCode':actualRes?.StatusCode }
+        }
+        if(actualRes?.StatusCode === 200){
+            return { 'status':true, 'message':actualRes?.message, 'StatusCode':actualRes?.StatusCode }
+        }
+
+   } catch (error) {
+        console.log("Error while fetching a all posts for api docs",error)
+         return { 'status':false, 'error':error?.response?.data?.error || error?.response?.data?.message }
+   }
+}

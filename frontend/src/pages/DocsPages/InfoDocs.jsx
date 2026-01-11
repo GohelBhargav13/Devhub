@@ -174,7 +174,7 @@ const InfoDocs = () => {
             <p className="ml-6 text-[18px] font-bold">" can you ask a questions to the community? yes, why not !"</p>
             <div className="flex flex-col bg-slate-800/30 p-2 rounded-2xl border-r-4 border-r-white border-b-4 border-b-white border-t-2 border-t-white border-l-2 border-l-white ">
                 <div className="flex w-full h-full">
-                    <img src="https://devhub-s3-bucket.s3.eu-north-1.amazonaws.com/image1.png" width={600} className="p-4 border-2 border-slate-700/90 rounded-xl hover:animate-pulse hover:border-b-4 hover:border-slate-950/90 hover:cursor-pointer" />
+                    <img src="https://devhub-s3-bucket.s3.eu-north-1.amazonaws.com/image1.png" width={600} alt="Image-1" className="p-4 border-2 border-slate-700/90 rounded-xl hover:animate-pulse hover:border-b-4 hover:border-slate-950/90 hover:cursor-pointer" />
                     <p className="p-2.5 text-center flex items-center">
                        First of all, you have to login to ask question to the community.
                        After login, Go-to the create post page.
@@ -187,7 +187,7 @@ const InfoDocs = () => {
                       and also live comment on it.
                       Here is the time system how much time a question is open to collect the opinion from the community.
                     </p>
-                    <img src="https://devhub-s3-bucket.s3.eu-north-1.amazonaws.com/image.png" width={600} className="p-4 border-2 border-slate-700/90 rounded-xl hover:animate-pulse hover:border-b-4 hover:border-slate-950/90 hover:cursor-pointer" />
+                    <img src="https://devhub-s3-bucket.s3.eu-north-1.amazonaws.com/image.png" alt="Image-2" width={600} className="p-4 border-2 border-slate-700/90 rounded-xl hover:animate-pulse hover:border-b-4 hover:border-slate-950/90 hover:cursor-pointer" />
                 </div>
             </div>
           </div>

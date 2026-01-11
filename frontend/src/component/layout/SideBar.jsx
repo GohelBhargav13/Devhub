@@ -9,9 +9,9 @@ const platform_urls_users = [
   { 'url_name':'Home', 'path':'/', 'url_icon':<Home /> },
   { 'url_name':'Profile', 'path':'/get-profile','url_icon':<Contact /> },
   { 'url_name':'Post', 'path':'/new-post','url_icon':<Cross /> },
-  { 'url_name':'Docs', 'path':'/docs','url_icon':<FileCode /> },
   { 'url_name':'Save Posts', 'path':'/user-saved-posts','url_icon':<BookmarkPlus /> },
   { 'url_name':'Q&A', 'path':'/all-questions','url_icon':<MessageCircleQuestionMarkIcon /> },
+  { 'url_name':'Docs', 'path':'/docs','url_icon':<FileCode /> },
 ]
 
 const platform_urls_admin = [

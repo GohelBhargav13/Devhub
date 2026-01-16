@@ -9,6 +9,7 @@ const ForgotPass = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassward,setShowConfirmPassward] = useState(false)
   const [confirmPassword,setConfirmPassword] = useState("")
   const [passwordError,setPasswordError] = useState("")
   const [processing,setProcessing] = useState(false)
@@ -107,14 +108,14 @@ const ForgotPass = () => {
             <input
                 name="password"
                 id="password"
-                type={ showPassword ? "text" : "password" }
+                type={ showConfirmPassward ? "text" : "password" }
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder=". . . . . . . . . ."
                 className="w-full max-w-md pl-10 pb-3 border-2 border-white bg-slate-700 left-15 p-4 rounded-lg shadow-lg text-sm focus:outline-none focus:border-cyan-400"
             />
-            <button type="button" className="absolute left-82 top-15 cursor-pointer hover:shadow-amber-50 text-slate-900" onClick={() => setShowPassword(!showPassword)}>
-                { showPassword ? <EyeClosed size={20} /> : <Eye size={20} />  }
+            <button type="button" className="absolute left-82 top-15 cursor-pointer hover:shadow-amber-50 text-slate-900" onClick={() => setConfirmPassword(!showConfirmPassward)}>
+                { showConfirmPassward ? <EyeClosed size={20} /> : <Eye size={20} />  }
             </button>
             </div>
             { passwordError && (

@@ -21,7 +21,7 @@ A developers community where dev can share a new and latest updates,version to t
 ---
 
 ## 🛠 Tech Stack
-- **Frontend:** React / Tailwind CSS / Lucide-react ( Icon Library )
+- **Frontend:** React / Tailwind CSS / Lucide-react ( Icon Library ) / react-hot-toast ( Toast Library )
 - **Backend:** Node.js / Express / Zustand - ( State Management Library ) / Socket.io ( Real-Time updation ) / Brevo ( for Production email verification sending )
 - **Database:** Postgres / drizzle ( ORM )  
 - **Other:** JWT, Docker, neon ( for postgresql )
@@ -66,7 +66,7 @@ I have included a Postman Collection for all tested API endpoints.
 - Add More security
 - Add better error handling
 - Enhance UI
-- Various Login Opotion
+- Various Login Options
 - Friends connection
 
 ## 👨‍💻 Author

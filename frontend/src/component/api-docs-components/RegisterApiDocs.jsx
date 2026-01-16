@@ -19,6 +19,7 @@ const RegisterApiDocs = ({ apiPath, apiMethod }) => {
             e.preventDefault()
           const response = await handlePostRequest(path,{ user_email:userEmail,user_name:username,user_password:userPassword })
 
+          console.log(response)
           setCurrentApiResponse(JSON.stringify(response))
           setUserEmail("")
           setUserPassword("")
@@ -144,7 +145,7 @@ const RegisterApiDocs = ({ apiPath, apiMethod }) => {
               <p>Loading Response...</p>
             ) : (
               <>
-                <pre>{currentApiResponse !== null && JSON.stringify(currentApiResponse,null,2)}</pre>
+                <pre>{currentApiResponse !== null && currentApiResponse}</pre>
               </>
             )}
           </div>

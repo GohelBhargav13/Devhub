@@ -126,8 +126,8 @@ const ForgotPass = () => {
 
         <div>
             <button type="submit"
-            disabled={ !email || !password || processing }
-            className={`text-[18px] font-mono font-bold text-white ${ (!email || !password || processing) ? "disabled:bg-slate-400 disabled:cursor-not-allowed" : "bg-linear-to-br from-cyan-700 via-cyan-400 to-cyan-700 hover:bg-cyan-600 cursor-pointer hover:shadow-2xl"} w-full max-w-md mt-4 p-3 rounded-lg shadow-lg transition-all`}
+            disabled={ !email || !password || processing || !confirmPassword }
+            className={`text-[18px] font-mono font-bold text-white ${ (!email || !password || processing || !confirmPassword) ? "disabled:bg-slate-400 disabled:cursor-not-allowed" : "bg-linear-to-br from-cyan-700 via-cyan-400 to-cyan-700 hover:bg-cyan-600 cursor-pointer hover:shadow-2xl"} w-full max-w-md mt-4 p-3 rounded-lg shadow-lg transition-all`}
             >
                 { processing ? 'Processing...' : 'Reset' }
             </button>

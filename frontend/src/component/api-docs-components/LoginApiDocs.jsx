@@ -21,7 +21,6 @@ const LoginApiDocs = ({ apiMethod,apiPath }) => {
           setCurrentApiResponse(JSON.stringify(response))
           setUserEmail("")
           setUserPassword("")
-          setUsername("")
         } catch (error) {
             setIsLoading(false)
             console.error(`Error while requesting a users request on ${ path }`,error)

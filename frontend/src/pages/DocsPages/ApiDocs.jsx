@@ -66,18 +66,10 @@ const ApiDocs = () => {
   const [isShow,setIsShow] = useState(false)
   const [isLoading, setIsLoading] = useState(false);
 
-    // API try out feature controller
+    // API try out feature controller for GET
     const handleTryOut = async (method, path) => {
         try {
         setIsLoading(true);
-        if (method === "POST") {
-            setCurrentApiRoute((prev) => (prev === path ? "" : path));
-            return;
-        }
-        if (method === "DEL") {
-            setCurrentApiRoute((prev) => (prev === path ? "" : path));
-            return;
-        }
         if (method === "GET") {
             const res = await fetchDocsApis(path);
             setCurrentApiResponse(

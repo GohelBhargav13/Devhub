@@ -114,7 +114,7 @@ const ForgotPass = () => {
                 placeholder=". . . . . . . . . ."
                 className="w-full max-w-md pl-10 pb-3 border-2 border-white bg-slate-700 left-15 p-4 rounded-lg shadow-lg text-sm focus:outline-none focus:border-cyan-400"
             />
-            <button type="button" className="absolute left-82 top-15 cursor-pointer hover:shadow-amber-50 text-slate-900" onClick={() => setConfirmPassword(!showConfirmPassward)}>
+            <button type="button" className="absolute left-82 top-15 cursor-pointer hover:shadow-amber-50 text-slate-900" onClick={() => setShowConfirmPassward(!showConfirmPassward)}>
                 { showConfirmPassward ? <EyeClosed size={20} /> : <Eye size={20} />  }
             </button>
             </div>

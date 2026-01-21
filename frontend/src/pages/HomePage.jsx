@@ -5,7 +5,7 @@ import { fetchAllPosts, savePostByUser, unsavePostByUser } from "../apis/post.ap
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/auth.store.js";
 import { tagBadgesBg } from "../services/tagBadge.js";
-import { Loader2, Calendar, ChevronUp, ChevronDown,BookmarkPlus, BookmarkMinus } from "lucide-react";
+import { Loader2, Calendar, ChevronUp, ChevronDown,BookmarkPlus, BookmarkMinus,SquareArrowOutUpRight, ThumbsDown, ThumbsUp } from "lucide-react";
 import { userGreetMessage,postDescCountTime } from "../apis/greet.api.js"
 
 const HomePage = () => {
@@ -92,6 +92,11 @@ const HomePage = () => {
     }
   }
 
+  // Handle a copy the link of the post
+  const handleShareCopyLinkPost = async(post_id) => {
+      navigator.clipboard.writeText(`https://devhub-self.vercel.app/show-details/post-details/${post_id}`)
+      toast.success("Link copied !")
+  }
   if (!userData) {
     return <div>Loading...</div>;
   }
@@ -205,7 +210,7 @@ const HomePage = () => {
                           ))}
                         </div>
                       </div>
-                      <div className="mt-2">
+                      <div className="mt-2 border-b-2 rounded-xl p-2 border-b-slate-400">
                         <label className="font-mono text-[13px] font-bold text-slate-300">
                           Related Tags:
                         </label>
@@ -218,6 +223,19 @@ const HomePage = () => {
                           </>
                         ))}
                         </div>
+                      </div>
+                      <div className="bg-slate-950/40 mt-2 rounded-xl p-2 border-2 border-slate-500">
+                          <div className="flex gap-35 ml-2">
+                              <div className="p-1.5 border-2 border-slate-700 rounded-xl hover:text-blue-500 hover:cursor-pointer">
+                                <SquareArrowOutUpRight size={25} onClick={() => handleShareCopyLinkPost(post?.post_id)} />
+                              </div>
+                                <div className="p-1.5 border-2 border-slate-700 rounded-xl hover:text-blue-500 hover:cursor-pointer">
+                                <ThumbsUp size={25} />
+                              </div>
+                                <div className="p-1.5 border-2 border-slate-700 rounded-xl hover:text-blue-500 hover:cursor-pointer">
+                                <ThumbsDown size={25} />
+                              </div>
+                          </div>
                       </div>
                     </div>
                   </div>

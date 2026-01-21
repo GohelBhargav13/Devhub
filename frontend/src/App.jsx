@@ -21,6 +21,7 @@ import ForgotPass from "./pages/ForgotPass.jsx"
 import FourOFour from "./pages/FourOFour.jsx"
 import UserSavedPosts from "./pages/UserSavedPosts.jsx"
 import AllQuestions from "./pages/AllQuestions.jsx"
+import OnePostPage from "./pages/OnePostPage.jsx"
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
           <Route path="/register" element={ <RegisterPage /> } />
           <Route path="/email-verify/:emailToken" element={ <EmailVerifiy /> } />
           <Route path="/forgot-password" element={ <ForgotPass /> } />
+          <Route path="/show-details/post-details/:postId" element={ <OnePostPage /> } />
           <Route path="/get-profile" element={ <ProtectRoute> <UserProfile /> </ProtectRoute> } />
           <Route path="/new-post" element={ <ProtectRoute> <NewPost /> </ProtectRoute> } />
           <Route path="/delete-user-account" element={ <ProtectRoute> <UserAccountDelete /> </ProtectRoute> } />

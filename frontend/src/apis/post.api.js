@@ -215,3 +215,26 @@ export const fetchUserSavedPosts = async() => {
         return { 'status':false, 'data':null, 'error': error?.response?.data?.error || error?.response?.data?.message  }
     }
 }
+
+// fetch post details from the post
+export const fetchPostById = async(postId) => {
+    try {
+        if(!postId){
+            return { 'status':false, "error":"post id is not found" }
+        }
+        const responseData = await apiClient.get(`/post/post-details/show-post-details/${postId}`)
+        const actualRes = responseData?.data
+
+        if(actualRes?.StatusCode >= 400){
+            return { 'status':false, "error":actualRes?.error }
+        }
+
+        if(actualRes?.StatusCode === 200){
+            return { 'status':true, "message":'Post details are fetched', 'post_details':actualRes?.post_details }
+        }
+
+    } catch (error) {
+        return { 'status':false, "error":error?.response?.data?.error || error?.response?.data?.message }
+    }
+
+}

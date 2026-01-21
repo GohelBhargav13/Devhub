@@ -62,12 +62,12 @@ const SideBar = ({ userData }) => {
           </div>
           <div className={`flex flex-col text-[17px] gap-8 ${isOpen ? "p-8" : "p-2"}`}>
                    {platform_urls_users.map((url) => (
-                    ( isOpen ? ( <button key={url.url_name} className=" bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white" onClick={() => naviagte(url.path)}>{url.url_name}</button>) : ( <button key={url.url_name} className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white justify-items-center" onClick={() => naviagte(url.path)}>
+                    ( isOpen ? ( <button title={`${url?.url_name}`} key={url.url_name} className=" bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white" onClick={() => naviagte(url.path)}>{url.url_name}</button >) : ( <button title={`${url?.url_name}`} key={url.url_name} className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white justify-items-center" onClick={() => naviagte(url.path)}>
                       { url.url_icon }
                     </button>))
                    ))}
                     {userData?.user_role === 'ADMIN' && platform_urls_admin.map((url) => (
-                    ( isOpen ? ( <button key={url.url_name} className=" bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white" onClick={() => naviagte(url.path)}>{url.url_name}</button>) : ( <button key={url.url_name} className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white justify-items-center" onClick={() => naviagte(url.path)}>
+                    ( isOpen ? ( <button title={`${url?.url_name}`} key={url.url_name} className=" bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white" onClick={() => naviagte(url.path)}>{url.url_name}</button>) : ( <button title={`${url?.url_name}`} key={url.url_name} className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white justify-items-center" onClick={() => naviagte(url.path)}>
                       { url.url_icon }
                     </button>))
                    ))}
@@ -89,15 +89,15 @@ const SideBar = ({ userData }) => {
               <div>
                 { isOpen ? (
                   <div className="flex gap-2">
-                     <button className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white mt-3 items-center" onClick={handleLogout}>Logout</button>
-                     <button onClick={() => naviagte("/delete-user-account")} className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white mt-3 items-center">Delete Acc</button>
+                     <button title="logout" className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white mt-3 items-center" onClick={handleLogout}>Logout</button>
+                     <button title="Delete Acc" onClick={() => naviagte("/delete-user-account")} className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white mt-3 items-center">Delete Acc</button>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-2 items-center">
-                    <button className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white mt-4" onClick={handleLogout}>
+                    <button title="logout" className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white mt-4" onClick={handleLogout}>
                     <LogOut size={30} />
                     </button>
-                    <button className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white mt-4" onClick={() => naviagte("/delete-user-account")}>
+                    <button title="Delete Acc" className="bg-cyan-400 rounded-lg p-3 hover:bg-cyan-500 hover:text-white hover:cursor-pointer hover:p-3 duration-300 hover:rounded-xl hover:border-r-4 hover:border-r-white hover:border-b-4 hover:border-b-white mt-4" onClick={() => naviagte("/delete-user-account")}>
                       <OctagonMinus size={30} />
                     </button>
                   </div>

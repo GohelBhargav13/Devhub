@@ -155,11 +155,11 @@ const HomePage = () => {
                         </p>
                       </div>
                       <div className="flex flex-col gap-3 text-end w-full">
-                        <div className="flex justify-end gap-2 font-mono font-bold text-[15px] ml-auto">
+                        <div className="flex justify-end gap-2 font-mono font-bold text-[15px] ml-auto" title="Date">
                           <Calendar />
                           <p>{post?.post_at ? new Date(post?.post_at).toLocaleDateString() : "N/A"}</p>
                         </div>
-                       <div className="font-mono text-[13px] w-full justify-end flex text-slate-300 font-bold mr-1 gap-2">
+                       <div className="font-mono text-[13px] w-full justify-end flex text-slate-300 font-bold mr-1 gap-2" title="save post">
                           <button className="cursor-pointer" onClick={() => handleSavePost(post?.post_id)}><BookmarkPlus /></button>
                            <p>{postDescCountTime(post?.post_desc)}</p>
                        </div>
@@ -226,13 +226,13 @@ const HomePage = () => {
                       </div>
                       <div className="bg-slate-950/40 mt-2 rounded-xl p-2 border-2 border-slate-500">
                           <div className="flex gap-35 ml-2">
-                              <div className="p-1.5 border-2 border-slate-700 rounded-xl hover:text-blue-500 hover:cursor-pointer">
+                              <div className="p-1.5 border-2 border-slate-700 rounded-xl hover:text-blue-500 hover:cursor-pointer" title="share">
                                 <SquareArrowOutUpRight size={25} onClick={() => handleShareCopyLinkPost(post?.post_id)} />
                               </div>
-                                <div className="p-1.5 border-2 border-slate-700 rounded-xl hover:text-blue-500 hover:cursor-pointer">
+                                <div className="p-1.5 border-2 border-slate-700 rounded-xl hover:text-blue-500 hover:cursor-pointer" title="Like">
                                 <ThumbsUp size={25} />
                               </div>
-                                <div className="p-1.5 border-2 border-slate-700 rounded-xl hover:text-blue-500 hover:cursor-pointer">
+                                <div className="p-1.5 border-2 border-slate-700 rounded-xl hover:text-blue-500 hover:cursor-pointer" title="dislike">
                                 <ThumbsDown size={25} />
                               </div>
                           </div>

@@ -194,3 +194,41 @@ export const userAllSavedPostsService = async (user_id) => {
         console.log("Error while fetch users save post from services",error)
     }
 }
+
+// is post is exist or not
+export const isPostExist = async(postId) => {
+    try {
+        const [post_data] = await db.select({
+            post_id:postTable.post_id
+        }).from(postTable).where(eq(postTable.post_id,postId))
+
+        if(post_data){
+            return { 'status':true, 'post_data':post_data }
+        }
+        return { 'status':false, 'error': "Post not found !" }
+    } catch (error) {
+        return { 'status':false, 'error':`Error while fetch a post details:${error}` }
+    }
+}
+
+// fetch post by ID
+export const fetchPostById = async(postId) => {
+    try {
+        const [post_details] = await db.select({
+            post_id:postTable.post_id,
+            post_desc:postTable.post_description,
+            post_links:postTable.post_links,
+            post_tags:postTable.post_tags,
+            post_createdAt:postTable.created_at,
+            user_name:userTable.user_name,
+            user_internalName:userTable.internal_username
+        }).from(postTable).innerJoin(userTable,eq(userTable.user_id,postTable.user_id)).where(eq(postTable.post_id,postId))
+
+        if(post_details){
+            return { 'status':true, 'post_details':post_details }
+        }
+        return { 'status':false, 'error': "post is not fetched" }
+    } catch (error) {
+        console.log("Error while fetching a one post by id",error)
+    }
+}

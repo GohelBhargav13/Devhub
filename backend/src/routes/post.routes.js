@@ -1,6 +1,6 @@
 import express from "express"
 import { ensureUserAuthenticate,checkTokenExists } from "../middleware/auth.middleware.js"
-import { allPosts, allPostsForApiDocs, deletePostOfUser, deleteSavePost, getOnlyUserPosts, newPostCreation, saveUserPost, userAllSavedPosts } from "../controller/post.controller.js"
+import { allPosts, allPostsForApiDocs, deletePostOfUser, deleteSavePost, fetchOnePostById, getOnlyUserPosts, newPostCreation, saveUserPost, userAllSavedPosts } from "../controller/post.controller.js"
 const postRouter = express.Router()
 
 
@@ -12,6 +12,7 @@ postRouter.post("/add-save-post/:post_id",checkTokenExists,ensureUserAuthenticat
 postRouter.delete("/remove-save-post/:post_id",checkTokenExists,ensureUserAuthenticate,deleteSavePost)
 postRouter.get("/all-saved-posts",checkTokenExists,ensureUserAuthenticate,userAllSavedPosts)
 postRouter.get("/all-posts-api-docs",allPostsForApiDocs)
+postRouter.get("/post-details/show-post-details/:postId",fetchOnePostById)
 
 
 export default postRouter

@@ -1,4 +1,4 @@
-import { addNewPost, createNewUserPostSave, deleteRecordUserPostSave,userAllSavedPostsService } from "../services/post.service.js"
+import { addNewPost, createNewUserPostSave, deleteRecordUserPostSave,fetchPostById,isPostExist,userAllSavedPostsService } from "../services/post.service.js"
 import { fetchAllPosts,loginUserPosts,deleteAUserPost } from "../services/post.service.js"
 /**
  * 
@@ -182,5 +182,37 @@ export const userAllSavedPosts = async(req,res) => {
 
     } catch (error) {
         console.log("Error while fetching a user save post from controller",error)
+    }
+}
+
+// fetch a one post details based on the post_id
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ */
+export const fetchOnePostById = async(req,res) => {
+    try {
+        const { postId } = req.params
+        
+        if(!postId){
+            return res.status(400).json({ 'StatusCode':400, 'error':"Isd is required", 'status':false })
+        }
+        const responseData = await isPostExist(postId)
+        
+        if(!responseData?.status){
+            return res.status(400).json({ 'StatusCode':400, "error":responseData?.error })
+        }
+
+        // fetch one post details
+       const post_res = await fetchPostById(postId)
+       if(!post_res.status){
+            return res.status(400).json({ 'StatusCode':400,'error':post_res.error, 'status':false })
+       }
+
+       res.status(200).json({ 'StatusCode':200, 'post_details':post_res.post_details, 'status':true })
+        
+    } catch (error) {
+        console.log("Error while fetching one post deatils",error)
     }
 }
